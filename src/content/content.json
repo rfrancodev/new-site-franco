@@ -1,0 +1,260 @@
+{
+  "site": {
+    "name": "Rafael Franco",
+    "tagline": "Desenvolvimento de Sistemas, Business Intelligence & Inteligência Artificial",
+    "whatsappNumber": "553599057566",
+    "whatsappDefaultMessage": "Olá Rafael! Analisei seu site e gostaria de conversar sobre um projeto para minha empresa."
+  },
+  "navbar": {
+    "logo": "Rafael Franco",
+    "links": [
+      { "id": "home", "label": "Início" },
+      { "id": "servicos", "label": "Serviços" },
+      { "id": "projetos", "label": "Projetos" },
+      { "id": "sobre", "label": "Sobre" },
+      { "id": "contato", "label": "Contato" }
+    ],
+    "cta": "Falar pelo WhatsApp"
+  },
+  "hero": {
+    "badge": "🚀 Especialista em Sistemas, Automação e IA",
+    "title": "Transforme processos em resultados com tecnologia inteligente",
+    "subtitle": "Desenvolvimento de sistemas, automações, dashboards e Inteligência Artificial para empresas que querem crescer com mais eficiência.",
+    "ctaPrimary": "Solicitar Orçamento",
+    "ctaSecondary": "Falar pelo WhatsApp",
+    "ctaTertiary": "Conhecer Projetos"
+  },
+  "services": {
+    "title": "Soluções completas para transformar processos em resultados",
+    "subtitle": "Cada projeto é desenvolvido para resolver problemas reais do negócio, aumentar a eficiência operacional e gerar retorno sobre o investimento através da tecnologia.",
+    "items": [
+      {
+        "id": "power-bi",
+        "title": "Business Intelligence & Dashboards Power BI",
+        "icon": "BarChart3",
+        "description": "Transforme dados em decisões inteligentes com dashboards executivos, indicadores estratégicos, modelagem SQL e relatórios interativos desenvolvidos para gestores que precisam acompanhar resultados em tempo real."
+      },
+      {
+        "id": "automacao",
+        "title": "Automação de Processos Empresariais",
+        "icon": "Cpu",
+        "description": "Automatize tarefas repetitivas, integre sistemas, reduza erros operacionais e permita que sua equipe dedique tempo ao que realmente gera valor para o negócio."
+      },
+      {
+        "id": "sites",
+        "title": "Desenvolvimento de Sites Profissionais",
+        "icon": "Globe",
+        "description": "Sites institucionais e Landing Pages modernas, rápidas, responsivas e otimizadas para SEO, projetadas para fortalecer sua marca e gerar novos clientes."
+      },
+      {
+        "id": "sistemas",
+        "title": "Desenvolvimento de Sistemas Web Sob Medida",
+        "icon": "LayoutGrid",
+        "description": "Criação de sistemas personalizados, plataformas SaaS, portais corporativos e aplicações web desenvolvidas para atender exatamente às necessidades da sua empresa."
+      },
+      {
+        "id": "ia",
+        "title": "Inteligência Artificial para Empresas",
+        "icon": "Sparkles",
+        "description": "Implementação de Agentes de IA, Chatbots Inteligentes, automação de atendimento, análise de documentos e integração com modelos avançados de linguagem para acelerar processos e melhorar a experiência do cliente."
+      },
+      {
+        "id": "vps",
+        "title": "Infraestrutura Cloud, Docker & VPS",
+        "icon": "Server",
+        "description": "Implantação de ambientes seguros utilizando Docker, Nginx e servidores VPS preparados para aplicações de alta disponibilidade, escalabilidade e monitoramento contínuo."
+      },
+      {
+        "id": "consultoria",
+        "title": "Consultoria em Tecnologia e Transformação Digital",
+        "icon": "HelpCircle",
+        "description": "Análise técnica, definição de arquitetura, planejamento estratégico e implementação das melhores soluções para acelerar a transformação digital da sua empresa."
+      }
+    ]
+  },
+  "projects": {
+    "title": "Projetos desenvolvidos para gerar resultados mensuráveis",
+    "subtitle": "Cada solução é construída para resolver desafios específicos, otimizar processos e entregar ganhos reais em produtividade, eficiência e tomada de decisão.",
+    "items": [
+      {
+        "id": "proj-ia-agents",
+        "title": "Plataforma Inteligente de Atendimento com IA",
+        "category": "Inteligência Artificial",
+        "description": "Sistema desenvolvido com agentes inteligentes capazes de qualificar leads, responder dúvidas automaticamente, consultar bases de conhecimento e encaminhar atendimentos para o setor responsável, reduzindo o tempo de resposta e aumentando a eficiência comercial.",
+        "tech": [
+          "React",
+          "Node.js",
+          "Gemini API",
+          "Tailwind CSS"
+        ],
+        "metric": "Até 200% mais produtividade no atendimento"
+      },
+      {
+        "id": "proj-bi-corp",
+        "title": "Dashboard Executivo para Gestão Empresarial",
+        "category": "Business Intelligence",
+        "description": "Painel gerencial integrando ERP, CRM e bancos de dados para acompanhamento em tempo real de vendas, indicadores financeiros, metas e desempenho operacional, permitindo decisões rápidas baseadas em dados confiáveis.",
+        "tech": [
+          "Power BI",
+          "SQL",
+          "DAX",
+          "ETL"
+        ],
+        "metric": "80% menos tempo na consolidação de relatórios"
+      },
+      {
+        "id": "proj-saas-cloud",
+        "title": "Sistema SaaS para Gerenciamento de Infraestrutura",
+        "category": "Sistema Web",
+        "description": "Aplicação web desenvolvida para administrar servidores VPS, containers Docker e recursos computacionais através de uma interface intuitiva, automatizando processos de deploy e monitoramento.",
+        "tech": [
+          "React",
+          "Node.js",
+          "Docker",
+          "API REST"
+        ],
+        "metric": "Mais de 1.200 implantações automatizadas por mês"
+      },
+      {
+        "id": "proj-landing-seo",
+        "title": "Landing Page de Alta Performance",
+        "category": "Desenvolvimento Web",
+        "description": "Landing Page desenvolvida com foco em SEO, experiência do usuário, velocidade de carregamento e conversão, alcançando excelentes resultados nos indicadores do Google Lighthouse.",
+        "tech": [
+          "React",
+          "Vite",
+          "Tailwind",
+          "Framer Motion"
+        ],
+        "metric": "100/100 em Performance no Google Lighthouse"
+      }
+    ]
+  },
+  "about": {
+    "title": "Tecnologia aplicada para impulsionar negócios",
+    "subtitle": "Mais do que desenvolver software, meu objetivo é criar soluções que aumentam a eficiência operacional, automatizam processos e ajudam empresas a crescer com segurança.",
+    "name": "Rafael Franco",
+    "role": "Especialista em Desenvolvimento de Sistemas, Business Intelligence, Automação e Inteligência Artificial",
+    "story": [
+      "Atuo desenvolvendo soluções tecnológicas para empresas que desejam reduzir custos, eliminar processos manuais, organizar informações e utilizar a tecnologia como diferencial competitivo.",
+      "Minha experiência reúne desenvolvimento de sistemas web, análise de dados, Business Intelligence, automação de processos, infraestrutura em nuvem e Inteligência Artificial. Essa combinação permite entregar soluções completas, desde o planejamento até a implantação em produção.",
+      "Cada projeto é desenvolvido pensando em escalabilidade, segurança, desempenho e facilidade de manutenção. O objetivo não é apenas entregar software, mas criar ferramentas que gerem impacto direto nos resultados da empresa."
+    ],
+    "skillsTitle": "Tecnologias que utilizo",
+    "skills": [
+      {
+        "category": "Desenvolvimento Web",
+        "items": [
+          "TypeScript",
+          "React",
+          "Node.js",
+          "Express",
+          "Tailwind CSS"
+        ]
+      },
+      {
+        "category": "Banco de Dados & BI",
+        "items": [
+          "SQL",
+          "PostgreSQL",
+          "Power BI",
+          "Python"
+        ]
+      },
+      {
+        "category": "Inteligência Artificial",
+        "items": [
+          "Agentes de IA",
+          "Chatbots",
+          "LLMs",
+          "Automações Inteligentes"
+        ]
+      },
+      {
+        "category": "Infraestrutura",
+        "items": [
+          "Docker",
+          "Linux",
+          "Nginx",
+          "VPS",
+          "Git"
+        ]
+      }
+    ]
+  },
+  "testimonials": {
+    "title": "Resultados percebidos pelos clientes",
+    "subtitle": "A melhor tecnologia é aquela que gera impacto real no dia a dia da empresa.",
+    "items": [
+      {
+        "name": "Márcio G.",
+        "role": "CEO",
+        "text": "Precisávamos automatizar nossa operação comercial e reduzir o tempo gasto com atendimento inicial. A solução desenvolvida superou nossas expectativas e aumentou significativamente a produtividade da equipe."
+      },
+      {
+        "name": "Alessandra S.",
+        "role": "Diretora de Operações",
+        "text": "Hoje conseguimos acompanhar indicadores estratégicos em tempo real através dos dashboards. As decisões ficaram muito mais rápidas e baseadas em dados confiáveis."
+      },
+      {
+        "name": "Eduardo M.",
+        "role": "Gerente de Tecnologia",
+        "text": "Excelente capacidade técnica e visão de negócio. Além da implementação da infraestrutura, recebemos uma solução preparada para crescer junto com a empresa."
+      }
+    ]
+  },
+  "contact": {
+    "title": "Vamos transformar sua ideia em uma solução que gera resultados?",
+    "subtitle": "Conte um pouco sobre seu projeto ou desafio. Vou analisar sua necessidade e retornar com uma proposta personalizada, sem compromisso, em até 24 horas úteis.",
+    "form": {
+      "nameLabel": "Nome",
+      "namePlaceholder": "Como você se chama?",
+      "emailLabel": "E-mail",
+      "emailPlaceholder": "Digite seu melhor e-mail",
+      "phoneLabel": "WhatsApp",
+      "phonePlaceholder": "(DDD) 99999-9999",
+      "companyLabel": "Empresa (Opcional)",
+      "companyPlaceholder": "Nome da empresa",
+      "serviceLabel": "Qual solução você procura?",
+      "servicePlaceholder": "Selecione uma opção",
+      "budgetLabel": "Faixa de investimento (Opcional)",
+      "budgetPlaceholder": "Selecione uma faixa",
+      "messageLabel": "Conte sobre seu projeto",
+      "messagePlaceholder": "Descreva seu objetivo, o problema que deseja resolver ou a ideia que pretende desenvolver. Quanto mais detalhes, mais precisa será minha análise.",
+      "submitButton": "Solicitar Orçamento",
+      "submittingButton": "Enviando solicitação...",
+      "successTitle": "Solicitação enviada com sucesso!",
+      "successText": "Obrigado pelo contato, {name}! Recebi sua solicitação e farei uma análise inicial do seu projeto. Em até 24 horas úteis entrarei em contato pelo WhatsApp ou e-mail informado para alinharmos os próximos passos.",
+      "errorText": "Não foi possível enviar sua solicitação neste momento. Tente novamente em alguns instantes ou entre em contato diretamente pelo WhatsApp.",
+      "services": [
+        "Dashboard Power BI",
+        "Business Intelligence",
+        "Automação de Processos",
+        "Sistema Web Sob Medida",
+        "Desenvolvimento de Site",
+        "Landing Page",
+        "API e Integrações",
+        "Inteligência Artificial",
+        "Agentes de IA",
+        "Chatbot Inteligente",
+        "Infraestrutura VPS",
+        "Docker",
+        "Consultoria em Tecnologia",
+        "Outro"
+      ],
+      "budgets": [
+        "Até R$ 2.000",
+        "R$ 2.000 a R$ 5.000",
+        "R$ 5.000 a R$ 10.000",
+        "R$ 10.000 a R$ 25.000",
+        "Acima de R$ 25.000",
+        "Prefiro conversar primeiro"
+      ]
+    }
+  },
+  "footer": {
+    "text": "Especialista em Desenvolvimento de Sistemas, Business Intelligence, Automação de Processos e Inteligência Artificial para empresas que desejam crescer através da tecnologia.",
+    "copyright": "© 2026 Rafael Franco. Todos os direitos reservados.",
+    "disclaimer": "Projetos desenvolvidos com foco em desempenho, escalabilidade, segurança, SEO e experiência do usuário."
+  }
+}
