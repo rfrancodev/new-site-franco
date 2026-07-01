@@ -17,7 +17,7 @@ app.post("/api/contact", async (req, res) => {
   try {
     const { name, whatsapp, email, company, service, budget, message, origin } = req.body;
 
-    // Simple server-side validation
+    // 1. Basic field presence validation
     if (!name || !whatsapp || !email || !service || !message) {
       return res.status(400).json({
         success: false,
@@ -25,25 +25,86 @@ app.post("/api/contact", async (req, res) => {
       });
     }
 
+    // 2. Name validation (at least 3 characters)
+    if (name.trim().length < 3) {
+      return res.status(400).json({
+        success: false,
+        error: "Por favor, insira seu nome completo ou pelo menos 3 caracteres.",
+      });
+    }
+
+    // 3. Email validation using RFC-compliant basic regex
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email.trim())) {
+      return res.status(400).json({
+        success: false,
+        error: "Por favor, insira um endereço de e-mail válido (exemplo: nome@empresa.com.br).",
+      });
+    }
+
+    // 4. WhatsApp / Phone validation
+    // Clean string to check for digits only. Brazil numbers are usually 10 or 11 digits.
+    const cleanPhone = whatsapp.replace(/\D/g, "");
+    if (cleanPhone.length < 10 || cleanPhone.length > 15) {
+      return res.status(400).json({
+        success: false,
+        error: "Por favor, insira um número de WhatsApp válido com DDD (mínimo de 10 dígitos). Exemplo: (11) 99999-9999.",
+      });
+    }
+
+    // 5. Message validation (at least 10 characters)
+    if (message.trim().length < 10) {
+      return res.status(400).json({
+        success: false,
+        error: "Por favor, escreva uma mensagem com pelo menos 10 caracteres detalhando seu projeto ou desafio.",
+      });
+    }
+
+    const n8nWebhookUrl = process.env.N8N_WEBHOOK_URL;
     const scriptUrl = process.env.GOOGLE_SHEETS_SCRIPT_URL;
 
     const payload = {
       timestamp: new Date().toISOString(),
-      name,
-      whatsapp,
-      email,
-      company: company || "Não informado",
+      name: name.trim(),
+      whatsapp: whatsapp.trim(),
+      email: email.trim().toLowerCase(),
+      company: company ? company.trim() : "Não informado",
       service,
       budget: budget || "Não informado",
-      message,
+      message: message.trim(),
       origin: origin || "Formulário de Contato",
     };
 
     console.log("=== NOVA SOLICITAÇÃO DE ORÇAMENTO ===");
     console.log(JSON.stringify(payload, null, 2));
 
-    if (scriptUrl && scriptUrl.trim() !== "") {
-      // Forward the request to Google Apps Script Web App
+    // A. n8n Webhook Integration takes priority
+    if (n8nWebhookUrl && n8nWebhookUrl.trim() !== "") {
+      console.log(`Enviando dados para o Webhook do n8n em: ${n8nWebhookUrl}`);
+      
+      const response = await fetch(n8nWebhookUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Erro na resposta do n8n: ${response.statusText}`);
+      }
+
+      const result = await response.json().catch(() => ({ status: "success" }));
+      console.log("Resposta do n8n:", result);
+
+      return res.status(200).json({
+        success: true,
+        message: "Sua solicitação foi enviada com sucesso ao n8n!",
+        data: result,
+      });
+    } 
+    // B. Fallback to Google Sheets Apps Script
+    else if (scriptUrl && scriptUrl.trim() !== "") {
       console.log(`Enviando dados para o Google Sheets em: ${scriptUrl}`);
       
       const response = await fetch(scriptUrl, {
@@ -66,13 +127,14 @@ app.post("/api/contact", async (req, res) => {
         message: "Sua mensagem foi enviada com sucesso ao Google Sheets!",
         data: result,
       });
-    } else {
-      // Sandbox mode - no script URL set
-      console.log("⚠️ GOOGLE_SHEETS_SCRIPT_URL não configurada no .env. Executando em modo Sandbox/Simulação.");
+    } 
+    // C. Sandbox / Demo Mode
+    else {
+      console.log("⚠️ Nem N8N_WEBHOOK_URL nem GOOGLE_SHEETS_SCRIPT_URL configuradas no .env. Executando em modo Sandbox/Simulação.");
       return res.status(200).json({
         success: true,
         sandbox: true,
-        message: "Solicitação recebida com sucesso no servidor (Modo Simulação/Sandbox)! Configure a variável GOOGLE_SHEETS_SCRIPT_URL para integrar com a planilha real.",
+        message: "Solicitação recebida com sucesso no servidor (Modo Simulação/Sandbox)! Configure a variável N8N_WEBHOOK_URL para integrar com seu n8n e automatizar os processos de marketing.",
       });
     }
   } catch (error: any) {

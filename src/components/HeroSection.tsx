@@ -56,26 +56,36 @@ export function HeroSection() {
           transition={{ duration: 0.6, delay: 0.1 }}
           className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight text-white max-w-4xl mx-auto leading-[1.1] font-display"
         >
-          {content.hero.title.split(" ").map((word, index) => {
-            // Give specific words a beautiful emerald gradient accent
-            const isHighlight =
-              word.toLowerCase().includes("inteligência") ||
-              word.toLowerCase().includes("ia") ||
-              word.toLowerCase().includes("modernos") ||
-              word.toLowerCase().includes("artificial");
-            return (
-              <span key={index} className="inline-block">
-                {isHighlight ? (
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-emerald-300 to-teal-400 font-black">
-                    {word}
-                  </span>
-                ) : (
-                  word
-                )}
-                &nbsp;
+          {content.hero.title.includes("tecnologia inteligente") ? (
+            <>
+              {content.hero.title.split("tecnologia inteligente")[0]}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-emerald-300 to-teal-400 font-black">
+                tecnologia inteligente
               </span>
-            );
-          })}
+              {content.hero.title.split("tecnologia inteligente")[1]}
+            </>
+          ) : (
+            content.hero.title.split(" ").map((word, index) => {
+              // Give specific words a beautiful emerald gradient accent
+              const isHighlight =
+                word.toLowerCase().includes("inteligência") ||
+                word.toLowerCase().includes("ia") ||
+                word.toLowerCase().includes("modernos") ||
+                word.toLowerCase().includes("artificial");
+              return (
+                <span key={index} className="inline-block">
+                  {isHighlight ? (
+                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-emerald-300 to-teal-400 font-black">
+                      {word}
+                    </span>
+                  ) : (
+                    word
+                  )}
+                  &nbsp;
+                </span>
+              );
+            })
+          )}
         </motion.h1>
 
         {/* Subheadline / Description */}

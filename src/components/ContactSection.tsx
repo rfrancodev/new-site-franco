@@ -32,9 +32,26 @@ export function ContactSection() {
   const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error">("idle");
   const [errorMessage, setErrorMessage] = useState("");
 
+  const formatWhatsApp = (value: string) => {
+    // Remove all non-digits
+    const clean = value.replace(/\D/g, "");
+    
+    // Format based on length: (XX) XXXXX-XXXX or (XX) XXXX-XXXX
+    if (clean.length === 0) return "";
+    if (clean.length <= 2) return `(${clean}`;
+    if (clean.length <= 6) return `(${clean.slice(0, 2)}) ${clean.slice(2)}`;
+    if (clean.length <= 10) return `(${clean.slice(0, 2)}) ${clean.slice(2, 6)}-${clean.slice(6)}`;
+    return `(${clean.slice(0, 2)}) ${clean.slice(2, 7)}-${clean.slice(7, 11)}`;
+  };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    if (name === "whatsapp") {
+      const formatted = formatWhatsApp(value);
+      setFormData((prev) => ({ ...prev, [name]: formatted }));
+    } else {
+      setFormData((prev) => ({ ...prev, [name]: value }));
+    }
   };
 
   const handleServiceSelect = (val: string) => {
@@ -55,9 +72,39 @@ export function ContactSection() {
       return;
     }
 
-    // Client-side validation
-    if (!formData.name || !formData.whatsapp || !formData.email || !formData.service || !formData.message) {
+    // Client-side validation: 1. Field presence
+    if (!formData.name.trim() || !formData.whatsapp.trim() || !formData.email.trim() || !formData.service || !formData.message.trim()) {
       setErrorMessage("Por favor, preencha todos os campos obrigatórios (*).");
+      setSubmitStatus("error");
+      return;
+    }
+
+    // Client-side validation: 2. Name validation
+    if (formData.name.trim().length < 3) {
+      setErrorMessage("Por favor, insira seu nome completo ou pelo menos 3 caracteres.");
+      setSubmitStatus("error");
+      return;
+    }
+
+    // Client-side validation: 3. Email regex validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email.trim())) {
+      setErrorMessage("Por favor, insira um e-mail válido (exemplo: nome@empresa.com.br).");
+      setSubmitStatus("error");
+      return;
+    }
+
+    // Client-side validation: 4. WhatsApp length check (including DDD)
+    const cleanPhone = formData.whatsapp.replace(/\D/g, "");
+    if (cleanPhone.length < 10 || cleanPhone.length > 15) {
+      setErrorMessage("Por favor, insira um WhatsApp válido com DDD (exemplo: (11) 99999-9999).");
+      setSubmitStatus("error");
+      return;
+    }
+
+    // Client-side validation: 5. Message length validation
+    if (formData.message.trim().length < 10) {
+      setErrorMessage("Por favor, detalhe seu projeto ou necessidade com pelo menos 10 caracteres.");
       setSubmitStatus("error");
       return;
     }
@@ -73,13 +120,13 @@ export function ContactSection() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          name: formData.name,
-          whatsapp: formData.whatsapp,
-          email: formData.email,
-          company: formData.company,
+          name: formData.name.trim(),
+          whatsapp: formData.whatsapp.trim(),
+          email: formData.email.trim().toLowerCase(),
+          company: formData.company.trim(),
           service: formData.service,
           budget: formData.budget,
-          message: formData.message,
+          message: formData.message.trim(),
           origin: "Formulário de Orçamento (Portfólio)",
         }),
       });

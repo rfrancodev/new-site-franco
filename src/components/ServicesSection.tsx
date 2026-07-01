@@ -62,7 +62,15 @@ export function ServicesSection() {
             transition={{ duration: 0.5 }}
             className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-white font-display"
           >
-            {content.services.title === "Soluções completas para transformar processos em resultados" ? (
+            {content.services.title.includes("reduzir custos") && content.services.title.includes("acelerar o crescimento") ? (
+              <>
+                {content.services.title.split("reduzir custos")[0]}
+                <span className="text-emerald-400 font-extrabold">reduzir custos</span>
+                {content.services.title.split("reduzir custos")[1].split("acelerar o crescimento")[0]}
+                <span className="text-emerald-400 font-extrabold">acelerar o crescimento</span>
+                {content.services.title.split("acelerar o crescimento")[1]}
+              </>
+            ) : content.services.title === "Soluções completas para transformar processos em resultados" ? (
               <>
                 Soluções completas para <span className="text-emerald-400 font-extrabold">transformar</span> processos em <span className="text-emerald-400 font-extrabold">resultados</span>
               </>
