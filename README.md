@@ -40,7 +40,7 @@ O ecossistema do projeto foi selecionado estrategicamente para fornecer escalabi
 ## 🚀 Funcionalidades de Destaque
 
 1.  **Conteúdo 100% Centralizado e Internacionalizável:**
-    *   Toda a cópia, títulos, slogans, depoimentos, diferenciais e especialidades do site estão centralizados em `/src/content/content.json`. Alterar um texto ou traduzir o site inteiro leva poucos minutos, sem mexer no código dos componentes React.
+    *   Toda a cópia, títulos, slogans, depoimentos, diferenciais, especialidades e até as informações estruturadas dos pop-ups/modais de serviços do site estão centralizados em `/src/content/content.json`. Alterar um texto ou traduzir o site inteiro leva poucos minutos, sem mexer no código dos componentes React.
 2.  **Formulário de Orçamentos com Dupla Camada de Validação:**
     *   **No Cliente (React):** Máscara automática de digitação inteligente para o WhatsApp, validação do padrão RFC de e-mails, validações de tamanho mínimo para evitar mensagens vazias ou inválidas.
     *   **No Servidor (Express):** Sanitização rigorosa dos dados antes de qualquer repasse para webhooks, garantindo a integridade dos dados integrados à API.
@@ -128,8 +128,8 @@ npm start
 
 Se você está usando este portfólio como referência para o seu próprio projeto, aqui estão alguns conceitos de excelência para observar no código:
 
-*   **Padrão Single Source of Truth para Cópia Textual:** Evite espalhar strings de texto estáticas por dentro de componentes React. Centralize tudo no `content.json`. Isso torna o seu código infinitamente mais limpo e legível.
-*   **Abstração Dinâmica de Ícones:** Veja o componente `LucideIcon.tsx`. Em vez de importar dezenas de ícones em cada componente de visualização, passamos a string do ícone mapeada no JSON e renderizamos dinamicamente, mantendo o bundle leve e as importações limpas.
+*   **Padrão Single Source of Truth para Cópia Textual:** Evite espalhar strings de texto estáticas por dentro de componentes React. Centralize toda a cópia de interface — incluindo estruturas complexas aninhadas, como os pop-ups detalhados de serviços — diretamente em `content.json`. Isso torna o seu código infinitamente mais limpo, padronizado, de facílima tradução (i18n) e legível.
+*   **Abstração Dinâmica de Ícones:** Veja o componente `LucideIcon.tsx`. Em vez de importar dezenas de ícones em cada componente de visualização, passamos a string do ícone mapeada no JSON ou objeto de dados e renderizamos dinamicamente, mantendo o bundle leve e as importações limpas.
 *   **Formulários Resilientes:** Sempre valide as informações na entrada (UI) e antes do processamento (Servidor). Formulários de contato que expõem chaves ou enviam dados sem validação no servidor tornam a aplicação vulnerável a SPAM e ataques.
 *   **Compilação Híbrida em Produção:** O uso do `esbuild` para compilar o servidor Express unifica dependências e resolve problemas de resolução de caminhos nativos do ES Modules no Node, mantendo a inicialização do container rápida em servidores VPS.
 

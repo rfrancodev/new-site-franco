@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { LucideIcon } from "./LucideIcon";
 import content from "../content/content.json";
-import { serviceDetails } from "../data/serviceDetails";
 
 const serviceIdToFormValue: Record<string, string> = {
   "power-bi": "Dashboard Power BI",
@@ -16,6 +15,8 @@ const serviceIdToFormValue: Record<string, string> = {
 
 export function ServicesSection() {
   const [selectedServiceId, setSelectedServiceId] = useState<string | null>(null);
+
+  const selectedService = content.services.items.find((item) => item.id === selectedServiceId);
 
   useEffect(() => {
     if (selectedServiceId) {
@@ -171,7 +172,7 @@ export function ServicesSection() {
 
       {/* Pop-up Details Modal */}
       <AnimatePresence>
-        {selectedServiceId && serviceDetails[selectedServiceId] && (
+        {selectedServiceId && selectedService && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -202,14 +203,14 @@ export function ServicesSection() {
               {/* Header: Icon & Title */}
               <div className="flex items-start space-x-4 sm:space-x-5 relative z-10 shrink-0 pb-5 border-b border-slate-800/60">
                 <div className="h-14 w-14 rounded-2xl bg-slate-950 border border-slate-800 text-emerald-400 flex items-center justify-center shrink-0 shadow-lg shadow-emerald-500/5">
-                  <LucideIcon name={serviceDetails[selectedServiceId].icon} size={28} />
+                  <LucideIcon name={selectedService.icon} size={28} />
                 </div>
                 <div className="space-y-1">
                   <span className="text-[10px] font-black text-emerald-400 uppercase tracking-widest font-mono">
                     Detalhes do Serviço
                   </span>
                   <h4 className="text-xl sm:text-2xl font-black text-white font-display leading-tight pr-6">
-                    {serviceDetails[selectedServiceId].title}
+                    {selectedService.title}
                   </h4>
                 </div>
               </div>
@@ -219,38 +220,40 @@ export function ServicesSection() {
                 {/* Main Details Paragraph */}
                 <div>
                   <p className="text-slate-300 text-sm sm:text-base leading-relaxed font-medium">
-                    {serviceDetails[selectedServiceId].details}
+                    {selectedService.details}
                   </p>
                 </div>
 
                 {/* Applications / Examples Section */}
-                <div className="pt-6 border-t border-slate-800/80">
-                  <h5 className="text-xs font-black text-slate-400 uppercase tracking-widest font-mono flex items-center gap-2 mb-6">
-                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                    Exemplos de Aplicação Prática para Empresas
-                  </h5>
+                {selectedService.applications && (
+                  <div className="pt-6 border-t border-slate-800/80">
+                    <h5 className="text-xs font-black text-slate-400 uppercase tracking-widest font-mono flex items-center gap-2 mb-6">
+                      <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                      Exemplos de Aplicação Prática para Empresas
+                    </h5>
 
-                  <div className="space-y-4 sm:space-y-5">
-                    {serviceDetails[selectedServiceId].applications.map((app, appIdx) => (
-                      <div 
-                        key={appIdx} 
-                        className="flex items-start space-x-3.5 p-4 rounded-2xl bg-slate-950/40 border border-slate-950 hover:border-slate-800/50 transition-all duration-200"
-                      >
-                        <div className="h-6 w-6 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0 mt-0.5">
-                          <LucideIcon name="Check" size={14} />
+                    <div className="space-y-4 sm:space-y-5">
+                      {selectedService.applications.map((app, appIdx) => (
+                        <div 
+                          key={appIdx} 
+                          className="flex items-start space-x-3.5 p-4 rounded-2xl bg-slate-950/40 border border-slate-950 hover:border-slate-800/50 transition-all duration-200"
+                        >
+                          <div className="h-6 w-6 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0 mt-0.5">
+                            <LucideIcon name="Check" size={14} />
+                          </div>
+                          <div className="space-y-1">
+                            <h6 className="text-sm font-bold text-white">
+                              {app.title}
+                            </h6>
+                            <p className="text-xs sm:text-sm text-slate-400 leading-relaxed">
+                              {app.description}
+                            </p>
+                          </div>
                         </div>
-                        <div className="space-y-1">
-                          <h6 className="text-sm font-bold text-white">
-                            {app.title}
-                          </h6>
-                          <p className="text-xs sm:text-sm text-slate-400 leading-relaxed">
-                            {app.description}
-                          </p>
-                        </div>
-                      </div>
-                    ))}
+                      ))}
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
 
               {/* Footer CTA Section */}
