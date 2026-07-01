@@ -31,17 +31,11 @@ export function ProjectsSection() {
             transition={{ duration: 0.5 }}
             className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-white font-display"
           >
-            {content.projects.title.includes("gerar resultados") ? (
+            {content.projects.title.includes("impulsionar o crescimento") ? (
               <>
-                {content.projects.title.split("gerar resultados")[0]}
-                <span className="text-emerald-400 font-extrabold">gerar resultados</span>
-                {content.projects.title.split("gerar resultados")[1]}
-              </>
-            ) : content.projects.title.includes("gerar resultado") ? (
-              <>
-                {content.projects.title.split("gerar resultado")[0]}
-                <span className="text-emerald-400 font-extrabold">gerar resultado</span>
-                {content.projects.title.split("gerar resultado")[1]}
+                {content.projects.title.split("impulsionar o crescimento")[0]}
+                <span className="text-emerald-400 font-extrabold">impulsionar o crescimento</span>
+                {content.projects.title.split("impulsionar o crescimento")[1]}
               </>
             ) : (
               content.projects.title
@@ -70,53 +64,89 @@ export function ProjectsSection() {
               className="h-full"
             >
               <TiltCard className="rounded-2xl border border-slate-800/80 bg-slate-900/60 p-6 sm:p-8 flex flex-col justify-between h-full hover:border-emerald-500/30 transition-all group overflow-hidden">
-                <div>
-                  {/* Category and Metric */}
-                  <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
-                    <span className="px-3 py-1 rounded-full bg-slate-850 border border-slate-800 text-emerald-400 text-xs font-semibold uppercase tracking-wider font-mono">
-                      {project.category}
-                    </span>
-                    <span className="inline-flex items-center space-x-1 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-bold font-mono">
-                      <LucideIcon name="Award" className="inline-block" size={12} />
-                      <span>{project.metric}</span>
-                    </span>
-                  </div>
-
-                  {/* Project Title */}
-                  <h3 className="text-xl sm:text-2xl font-bold text-white group-hover:text-emerald-400 transition-colors font-display">
-                    {project.title}
-                  </h3>
-
-                  {/* Project Description */}
-                  <p className="mt-4 text-sm sm:text-base text-slate-400 leading-relaxed">
-                    {project.description}
-                  </p>
-                </div>
-
-                {/* Tech Badges and CTA */}
-                <div className="mt-8 space-y-6">
-                  {/* Tech stack tags */}
-                  <div className="flex flex-wrap gap-2">
-                    {project.tech.map((tech) => (
-                      <span
-                        key={tech}
-                        className="px-2.5 py-1 rounded-lg bg-slate-950 border border-slate-900 text-slate-400 text-xs font-mono"
-                      >
-                        {tech}
+                <div className="flex flex-col h-full justify-between">
+                  <div>
+                    {/* Category */}
+                    <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
+                      <span className="px-3 py-1 rounded-full bg-slate-850 border border-slate-800 text-emerald-400 text-xs font-semibold uppercase tracking-wider font-mono">
+                        {project.category}
                       </span>
-                    ))}
+                    </div>
+
+                    {/* Project Title */}
+                    <h3 className="text-xl sm:text-2xl font-bold text-white group-hover:text-emerald-400 transition-colors font-display mb-6">
+                      {project.title}
+                    </h3>
+
+                    {/* 💼 Impacto para o Negócio */}
+                    <div className="bg-emerald-500/5 border border-emerald-500/10 rounded-xl p-4 mb-5">
+                      <div className="flex items-center gap-2 text-xs font-bold text-emerald-400 uppercase tracking-wider mb-1">
+                        <span>💼 Impacto para o Negócio</span>
+                      </div>
+                      <p className="text-sm text-slate-300 leading-relaxed font-medium">
+                        {project.businessImpact}
+                      </p>
+                    </div>
+
+                    {/* 🎯 Desafio */}
+                    <div className="mb-5">
+                      <div className="flex items-center gap-2 text-xs font-bold text-slate-300 uppercase tracking-wider mb-1">
+                        <span>🎯 Desafio</span>
+                      </div>
+                      <p className="text-sm text-slate-400 leading-relaxed">
+                        {project.challenge}
+                      </p>
+                    </div>
+
+                    {/* 💡 Solução */}
+                    <div className="mb-5">
+                      <div className="flex items-center gap-2 text-xs font-bold text-slate-300 uppercase tracking-wider mb-1">
+                        <span>💡 Solução</span>
+                      </div>
+                      <p className="text-sm text-slate-400 leading-relaxed">
+                        {project.solution}
+                      </p>
+                    </div>
+
+                    {/* 📈 Resultados */}
+                    <div className="mb-6">
+                      <div className="flex items-center gap-2 text-xs font-bold text-slate-300 uppercase tracking-wider mb-2">
+                        <span>📈 Resultados</span>
+                      </div>
+                      <ul className="space-y-1.5">
+                        {project.result.map((res, rIndex) => (
+                          <li key={rIndex} className="text-sm text-slate-300 flex items-start gap-2 leading-relaxed">
+                            <span className="text-emerald-400 font-bold flex-shrink-0">✓</span>
+                            <span>{res}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
                   </div>
 
-                  {/* Divider and link */}
-                  <div className="pt-4 border-t border-slate-800/60 flex items-center justify-between">
-                    <span className="text-xs font-mono text-slate-500">SOLUÇÃO CORPORATIVA</span>
-                    <button
-                      onClick={handleScrollToContact}
-                      className="text-xs sm:text-sm font-bold text-emerald-400 hover:text-emerald-300 flex items-center gap-1.5 transition-colors cursor-pointer group-hover:translate-x-1 transform transition-transform"
-                    >
-                      <span>Solicitar Projeto</span>
-                      <LucideIcon name="ArrowUpRight" size={14} />
-                    </button>
+                  {/* Footer content: Technologies & CTA */}
+                  <div className="mt-6 pt-4 border-t border-slate-800/60 space-y-4">
+                    {/* 🛠 Tecnologias */}
+                    <div>
+                      <div className="flex items-center gap-2 text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">
+                        <span>🛠 Tecnologias</span>
+                      </div>
+                      <div className="text-sm font-mono text-emerald-400/90 leading-relaxed">
+                        {project.technologies.join(" • ")}
+                      </div>
+                    </div>
+
+                    {/* Action link */}
+                    <div className="pt-2 flex items-center justify-between">
+                      <span className="text-[10px] font-mono text-slate-500 uppercase tracking-widest">Solução Concluída</span>
+                      <button
+                        onClick={handleScrollToContact}
+                        className="text-xs sm:text-sm font-bold text-emerald-400 hover:text-emerald-300 flex items-center gap-1.5 transition-colors cursor-pointer group-hover:translate-x-1 transform transition-transform"
+                      >
+                        <span>Solicitar Projeto</span>
+                        <LucideIcon name="ArrowUpRight" size={14} />
+                      </button>
+                    </div>
                   </div>
                 </div>
               </TiltCard>

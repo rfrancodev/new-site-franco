@@ -75,60 +75,90 @@
 },
 
   "projects": {
-    "title": "Projetos desenvolvidos para gerar resultados mensuráveis",
-    "subtitle": "Cada solução é construída para resolver desafios específicos, otimizar processos e entregar ganhos reais em produtividade, eficiência e tomada de decisão.",
+    "title": "Como a tecnologia pode impulsionar o crescimento da sua empresa",
+    "subtitle": "Conheça algumas soluções desenvolvidas para eliminar processos manuais, aumentar a produtividade e transformar desafios em oportunidades de crescimento.",
     "items": [
       {
         "id": "proj-ia-agents",
-        "title": "Plataforma Inteligente de Atendimento com IA",
+        "title": "Atendimento Inteligente com IA",
         "category": "Inteligência Artificial",
-        "description": "Sistema desenvolvido com agentes inteligentes capazes de qualificar leads, responder dúvidas automaticamente, consultar bases de conhecimento e encaminhar atendimentos para o setor responsável, reduzindo o tempo de resposta e aumentando a eficiência comercial.",
-        "tech": [
+        "businessImpact": "Redução de custos operacionais e atendimento escalável 24 horas por dia.",
+        "challenge": "Equipes sobrecarregadas com atendimentos repetitivos, dúvidas frequentes e processos manuais que consumiam tempo e reduziam a produtividade.",
+        "solution": "Desenvolvimento de agentes de Inteligência Artificial treinados com documentos da empresa para responder perguntas, consultar informações e direcionar solicitações automaticamente.",
+        "result": [
+          "Atendimento disponível 24 horas",
+          "Menos trabalho operacional",
+          "Mais produtividade da equipe",
+          "Melhor experiência para o cliente"
+        ],
+        "technologies": [
           "React",
           "Node.js",
           "Gemini API",
-          "Tailwind CSS"
-        ],
-        "metric": "Até 200% mais produtividade no atendimento"
+          "Agentes de IA"
+        ]
       },
       {
         "id": "proj-bi-corp",
-        "title": "Dashboard Executivo para Gestão Empresarial",
+        "title": "Indicadores Inteligentes para Gestão",
         "category": "Business Intelligence",
-        "description": "Painel gerencial integrando ERP, CRM e bancos de dados para acompanhamento em tempo real de vendas, indicadores financeiros, metas e desempenho operacional, permitindo decisões rápidas baseadas em dados confiáveis.",
-        "tech": [
+        "businessImpact": "Tomada de decisão mais rápida através de indicadores confiáveis em tempo real.",
+        "challenge": "Informações espalhadas in planilhas e diferentes sistemas dificultavam o acompanhamento dos indicadores e atrasavam decisões importantes.",
+        "solution": "Desenvolvimento de dashboards Power BI integrando ERP, CRM e bancos de dados em um único painel gerencial atualizado automaticamente.",
+        "result": [
+          "Indicadores centralizados",
+          "Decisões mais rápidas",
+          "Maior controle da operação",
+          "Gestão baseada em dados"
+        ],
+        "technologies": [
           "Power BI",
           "SQL",
           "DAX",
           "ETL"
-        ],
-        "metric": "80% menos tempo na consolidação de relatórios"
+        ]
       },
       {
         "id": "proj-saas-cloud",
-        "title": "Sistema SaaS para Gerenciamento de Infraestrutura",
+        "title": "Sistema para Automatizar Operações",
         "category": "Sistema Web",
-        "description": "Aplicação web desenvolvida para administrar servidores VPS, containers Docker e recursos computacionais através de uma interface intuitiva, automatizando processos de deploy e monitoramento.",
-        "tech": [
+        "businessImpact": "Redução de retrabalho e maior eficiência operacional.",
+        "challenge": "A operação dependia de diversos processos manuais, dificultando o gerenciamento da infraestrutura e aumentando a ocorrência de erros.",
+        "solution": "Desenvolvimento de uma plataforma web para gerenciamento de servidores, containers Docker e implantações automatizadas em um ambiente centralizado.",
+        "result": [
+          "Processos automatizados",
+          "Menos erros operacionais",
+          "Infraestrutura escalável",
+          "Maior produtividade"
+        ],
+        "technologies": [
           "React",
           "Node.js",
           "Docker",
           "API REST"
-        ],
-        "metric": "Mais de 1.200 implantações automatizadas por mês"
+        ]
       },
       {
-        "id": "proj-landing-seo",
-        "title": "Landing Page de Alta Performance",
-        "category": "Desenvolvimento Web",
-        "description": "Landing Page desenvolvida com foco em SEO, experiência do usuário, velocidade de carregamento e conversão, alcançando excelentes resultados nos indicadores do Google Lighthouse.",
-        "tech": [
-          "React",
-          "Vite",
-          "Tailwind",
-          "Framer Motion"
+        "id": "proj-mundo-ia",
+        "title": "Plataforma Corporativa de Inteligência Artificial",
+        "category": "IA Generativa",
+        "businessImpact": "Uso seguro da Inteligência Artificial para aumentar produtividade e preservar o conhecimento da empresa.",
+        "challenge": "Empresas precisavam utilizar Inteligência Artificial preservando dados internos e centralizando o conhecimento corporativo.",
+        "solution": "Desenvolvimento de uma plataforma privada baseada em Open WebUI com agentes inteligentes, RAG e integração aos bancos de dados corporativos.",
+        "result": [
+          "IA integrada aos processos internos",
+          "Consultas inteligentes a documentos",
+          "Conhecimento centralizado",
+          "Mais produtividade para diferentes áreas"
         ],
-        "metric": "100/100 em Performance no Google Lighthouse"
+        "technologies": [
+          "Open WebUI",
+          "Docker",
+          "PostgreSQL",
+          "Python",
+          "Node.js",
+          "RAG"
+        ]
       }
     ]
   },
