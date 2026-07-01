@@ -24,54 +24,56 @@
     "ctaSecondary": "Falar pelo WhatsApp",
     "ctaTertiary": "Conhecer Projetos"
   },
-  "services": {
-    "title": "Soluções completas para transformar processos em resultados",
-    "subtitle": "Cada projeto é desenvolvido para resolver problemas reais do negócio, aumentar a eficiência operacional e gerar retorno sobre o investimento através da tecnologia.",
-    "items": [
-      {
-        "id": "power-bi",
-        "title": "Business Intelligence & Dashboards Power BI",
-        "icon": "BarChart3",
-        "description": "Transforme dados em decisões inteligentes com dashboards executivos, indicadores estratégicos, modelagem SQL e relatórios interativos desenvolvidos para gestores que precisam acompanhar resultados em tempo real."
-      },
-      {
-        "id": "automacao",
-        "title": "Automação de Processos Empresariais",
-        "icon": "Cpu",
-        "description": "Automatize tarefas repetitivas, integre sistemas, reduza erros operacionais e permita que sua equipe dedique tempo ao que realmente gera valor para o negócio."
-      },
-      {
-        "id": "sites",
-        "title": "Desenvolvimento de Sites Profissionais",
-        "icon": "Globe",
-        "description": "Sites institucionais e Landing Pages modernas, rápidas, responsivas e otimizadas para SEO, projetadas para fortalecer sua marca e gerar novos clientes."
-      },
-      {
-        "id": "sistemas",
-        "title": "Desenvolvimento de Sistemas Web Sob Medida",
-        "icon": "LayoutGrid",
-        "description": "Criação de sistemas personalizados, plataformas SaaS, portais corporativos e aplicações web desenvolvidas para atender exatamente às necessidades da sua empresa."
-      },
-      {
-        "id": "ia",
-        "title": "Inteligência Artificial para Empresas",
-        "icon": "Sparkles",
-        "description": "Implementação de Agentes de IA, Chatbots Inteligentes, automação de atendimento, análise de documentos e integração com modelos avançados de linguagem para acelerar processos e melhorar a experiência do cliente."
-      },
-      {
-        "id": "vps",
-        "title": "Infraestrutura Cloud, Docker & VPS",
-        "icon": "Server",
-        "description": "Implantação de ambientes seguros utilizando Docker, Nginx e servidores VPS preparados para aplicações de alta disponibilidade, escalabilidade e monitoramento contínuo."
-      },
-      {
-        "id": "consultoria",
-        "title": "Consultoria em Tecnologia e Transformação Digital",
-        "icon": "HelpCircle",
-        "description": "Análise técnica, definição de arquitetura, planejamento estratégico e implementação das melhores soluções para acelerar a transformação digital da sua empresa."
-      }
-    ]
-  },
+
+"services": {
+  "title": "Tecnologia para reduzir custos, aumentar produtividade e acelerar o crescimento",
+  "subtitle": "Soluções desenvolvidas para automatizar processos, integrar sistemas e transformar tecnologia em resultados reais para sua empresa.",
+  "items": [
+    {
+      "id": "power-bi",
+      "title": "Dashboards Inteligentes para Gestão",
+      "icon": "BarChart3",
+      "description": "Centralize indicadores em dashboards Power BI e acompanhe vendas, desempenho e resultados em tempo real para tomar decisões mais rápidas e estratégicas."
+    },
+    {
+      "id": "automacao",
+      "title": "Automação de Processos Empresariais",
+      "icon": "Cpu",
+      "description": "Elimine tarefas repetitivas, reduza erros operacionais e economize horas de trabalho com automações inteligentes, integrações e robôs personalizados."
+    },
+    {
+      "id": "sites",
+      "title": "Sites e Landing Pages que Geram Clientes",
+      "icon": "Globe",
+      "description": "Desenvolvimento de sites profissionais, rápidos e otimizados para SEO, criados para transmitir credibilidade e gerar novas oportunidades de negócio."
+    },
+    {
+      "id": "sistemas",
+      "title": "Sistemas Web Sob Medida",
+      "icon": "LayoutGrid",
+      "description": "Sistemas desenvolvidos para automatizar sua operação, substituir planilhas, integrar processos e acompanhar o crescimento da empresa."
+    },
+    {
+      "id": "ia",
+      "title": "Agentes de Inteligência Artificial",
+      "icon": "Sparkles",
+      "description": "Implantação de agentes de IA e chatbots inteligentes para atendimento, suporte, vendas e automação de processos, disponíveis 24 horas por dia."
+    },
+    {
+      "id": "vps",
+      "title": "Infraestrutura Cloud e DevOps",
+      "icon": "Server",
+      "description": "Implantação de servidores VPS, Docker e infraestrutura em nuvem para manter seus sistemas rápidos, seguros, escaláveis e sempre disponíveis."
+    },
+    {
+      "id": "consultoria",
+      "title": "Integrações entre Sistemas e APIs",
+      "icon": "HelpCircle",
+      "description": "Conecte ERPs, CRMs, bancos de dados, APIs e outras plataformas para eliminar retrabalho, automatizar processos e garantir que as informações circulem de forma integrada e segura."
+    }
+  ]
+},
+
   "projects": {
     "title": "Projetos desenvolvidos para gerar resultados mensuráveis",
     "subtitle": "Cada solução é construída para resolver desafios específicos, otimizar processos e entregar ganhos reais em produtividade, eficiência e tomada de decisão.",

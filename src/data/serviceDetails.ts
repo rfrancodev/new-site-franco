@@ -13,15 +13,11 @@ export interface ServiceDetail {
 export const serviceDetails: Record<string, ServiceDetail> = {
   "power-bi": {
     id: "power-bi",
-    title: "Business Intelligence & Dashboards Power BI",
-    description: "Transforme dados brutos em inteligência corporativa com dashboards integrados e atualizados.",
+    title: "Dashboards Inteligentes para Gestão",
+    description: "Centralize indicadores em dashboards Power BI e acompanhe vendas, desempenho e resultados em tempo real para tomar decisões mais rápidas e estratégicas.",
     icon: "BarChart3",
     details: "Centralização e modelagem de dados provenientes de ERPs, CRMs, planilhas e bancos de dados SQL. Implementação de KPIs de negócio em relatórios visuais dinâmicos e de alta performance, permitindo que a liderança da empresa tenha clareza absoluta sobre o desempenho financeiro, comercial e de estoque.",
     applications: [
-      {
-        title: "DRE Automática e Fluxo de Caixa",
-        description: "Acompanhamento diário de entradas, saídas, margem de contribuição e custos fixos/variáveis sem preenchimento manual."
-      },
       {
         title: "Painel Comercial e Funil de Vendas",
         description: "Análise da performance do time de vendas, faturamento por região, ticket médio e produtos mais rentáveis."
@@ -35,14 +31,10 @@ export const serviceDetails: Record<string, ServiceDetail> = {
   "automacao": {
     id: "automacao",
     title: "Automação de Processos Empresariais",
-    description: "Conecte seus sistemas de forma inteligente e elimine o retrabalho manual.",
+    description: "Elimine tarefas repetitivas, reduza erros operacionais e economize horas de trabalho com automações inteligentes, integrações e robôs personalizados.",
     icon: "Cpu",
-    details: "Integração direta entre plataformas e sistemas via APIs (com ou sem ferramentas de integração como n8n/Make). Desenvolvimento de fluxos de trabalho que realizam tarefas repetitivas automaticamente, diminuindo drasticamente erros operacionais e liberando a equipe para focar no crescimento do negócio.",
+    details: "Integração direta entre plataformas e sistemas via APIs. Desenvolvimento de fluxos de trabalho que realizam tarefas repetitivas automaticamente, diminuindo drasticamente erros operacionais e liberando a equipe para focar no crescimento do negócio.",
     applications: [
-      {
-        title: "Emissão de Notas Fiscais Sincronizada",
-        description: "Sistemas integrados de checkout que capturam a venda e acionam o emissor de notas fiscais de forma instantânea."
-      },
       {
         title: "Sincronização de CRM e Operação",
         description: "Migração automática de leads qualificados do marketing para o CRM comercial e tarefas automáticas para o time de pré-vendas."
@@ -55,8 +47,8 @@ export const serviceDetails: Record<string, ServiceDetail> = {
   },
   "sites": {
     id: "sites",
-    title: "Desenvolvimento de Sites Profissionais",
-    description: "Páginas institucionais e Landing Pages focadas em máxima conversão e SEO impecável.",
+    title: "Sites e Landing Pages que Geram Clientes",
+    description: "Desenvolvimento de sites profissionais, rápidos e otimizados para SEO, criados para transmitir credibilidade e gerar novas oportunidades de negócio.",
     icon: "Globe",
     details: "Desenvolvimento sob medida utilizando tecnologias modernas focadas na velocidade extrema de carregamento, design responsivo de altíssimo nível, legibilidade otimizada e acessibilidade. Todos os projetos seguem os melhores critérios de otimização de motores de busca (SEO) para atrair leads orgânicos.",
     applications: [
@@ -76,8 +68,8 @@ export const serviceDetails: Record<string, ServiceDetail> = {
   },
   "sistemas": {
     id: "sistemas",
-    title: "Desenvolvimento de Sistemas Web Sob Medida",
-    description: "Sistemas robustos construídos sob medida para suprir as lacunas operacionais do seu negócio.",
+    title: "Sistemas Web Sob Medida",
+    description: "Sistemas desenvolvidos para automatizar sua operação, substituir planilhas, integrar processos e acompanhar o crescimento da empresa.",
     icon: "LayoutGrid",
     details: "Criação de softwares customizados desde a concepção do banco de dados até a interface do usuário final. Ideal para empresas que possuem processos complexos não atendidos por ferramentas prontas de prateleira ou que desejam lançar um produto digital (SaaS) no mercado.",
     applications: [
@@ -97,8 +89,8 @@ export const serviceDetails: Record<string, ServiceDetail> = {
   },
   "ia": {
     id: "ia",
-    title: "Inteligência Artificial para Empresas",
-    description: "Integre Inteligência Artificial diretamente à sua operação para ganhar escala e velocidade.",
+    title: "Agentes de Inteligência Artificial",
+    description: "Implantação de agentes de IA e chatbots inteligentes para atendimento, suporte, vendas e automação de processos, disponíveis 24 horas por dia.",
     icon: "Sparkles",
     details: "Criação de agentes inteligentes e assistentes treinados com a base de conhecimento específica do seu negócio. Utilizando modelos de linguagem modernos (como a API do Gemini e LLMs líderes), automatizamos a triagem comercial, respondemos dúvidas complexas e analisamos grandes conjuntos de texto em frações de segundos.",
     applications: [
@@ -118,10 +110,10 @@ export const serviceDetails: Record<string, ServiceDetail> = {
   },
   "vps": {
     id: "vps",
-    title: "Infraestrutura Cloud, Docker & VPS",
-    description: "Hospedagem profissional com alta disponibilidade, monitoramento e segurança avançada.",
+    title: "Infraestrutura Cloud e DevOps",
+    description: "Implantação de servidores VPS, Docker e infraestrutura em nuvem para manter seus sistemas rápidos, seguros, escaláveis e sempre disponíveis.",
     icon: "Server",
-    details: "Arquitetura e configuração de servidores virtuais (VPS) e serviços de nuvem nas principais plataformas (GCP, AWS, Oracle Cloud, DigitalOcean). Garantimos que suas aplicações rodem isoladas e seguras através do Docker, sob proteção do Nginx de forma veloz e resiliente.",
+    details: "Arquitetura e configuração de servidores virtuais (VPS) e serviços de nuvem. Garantimos que suas aplicações rodem isoladas e seguras através do Docker, sob proteção do Nginx de forma veloz e resiliente.",
     applications: [
       {
         title: "Conteinerização com Docker e Compose",
@@ -129,7 +121,7 @@ export const serviceDetails: Record<string, ServiceDetail> = {
       },
       {
         title: "Proxy Reverso e Roteamento Seguro (Nginx)",
-        description: "Roteamento otimizado de domínios, balanceamento de tráfego pesado e renovação automatizada de certificados digitais SSL."
+        description: "Roteamento otimizado de domínios e balanceamento de tráfego pesado."
       },
       {
         title: "Ambientes de CI/CD e Backup em Nuvem",
@@ -139,22 +131,22 @@ export const serviceDetails: Record<string, ServiceDetail> = {
   },
   "consultoria": {
     id: "consultoria",
-    title: "Consultoria em Tecnologia e Transformação Digital",
-    description: "Análise profunda para definir a arquitetura correta e as melhores ferramentas para sua jornada digital.",
+    title: "Integrações entre Sistemas e APIs",
+    description: "Conecte ERPs, CRMs, bancos de dados, APIs e outras plataformas para eliminar retrabalho, automatizar processos e garantir que as informações circulem de forma integrada e segura.",
     icon: "HelpCircle",
-    details: "Consultoria técnica estratégica que avalia os gargalos tecnológicos e de automação da sua empresa. Através de diagnósticos claros, desenhamos arquiteturas de soluções que resolvem gargalos de escalabilidade, evitam custos excessivos com ferramentas inadequadas e aceleram seu crescimento.",
+    details: "Criação de pontes de dados seguras e robustas que interligam suas ferramentas (ERP, CRM, gateways de pagamento, e-commerce, bancos de dados locais). Mapeamento de APIs existentes ou desenvolvimento de webhooks sob medida para que seus sistemas trabalhem sincronizados de ponta a ponta sem intervenção humana.",
     applications: [
       {
-        title: "Auditoria e Mapeamento de Processos",
-        description: "Revisão detalhada de como o fluxo de trabalho opera hoje para identificar quais setores perdem mais tempo em tarefas manuais."
+        title: "Sincronização entre CRM e ERP",
+        description: "Integração bidirecional automática para manter cadastros de clientes, faturamento, estoque e status de pedidos sempre alinhados."
       },
       {
-        title: "Escolha e Implementação de Tecnologias",
-        description: "Auxílio na seleção da pilha de tecnologia (Tech Stack) correta que se conecta perfeitamente ao seu software corporativo já existente."
+        title: "Integrações com Meios de Pagamento",
+        description: "Conexão nativa com gateways (Stripe, Asaas, Mercado Pago) para conciliação automática, cobranças recorrentes e tratamento de inadimplência."
       },
       {
-        title: "Modelagem e Governança de Dados",
-        description: "Estruturação de bancos de dados para que as análises futuras de BI sejam íntegras, seguras, rápidas e auditáveis."
+        title: "Webhooks e Processamento em Tempo Real",
+        description: "Disparo instantâneo de ações em outros sistemas quando um evento específico ocorre, garantindo eficiência sem delay operacional."
       }
     ]
   }
