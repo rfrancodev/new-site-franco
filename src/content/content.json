@@ -163,19 +163,28 @@
     ]
   },
   "about": {
-    "title": "Tecnologia aplicada para impulsionar negócios",
-    "subtitle": "Mais do que desenvolver software, meu objetivo é criar soluções que aumentam a eficiência operacional, automatizam processos e ajudam empresas a crescer com segurança.",
+    "title": "Desenvolvendo soluções que geram resultados",
+    "subtitle": "Ajudo empresas a automatizar processos, organizar dados e utilizar Inteligência Artificial para crescer com mais eficiência.",
     "name": "Rafael Franco",
-    "role": "Especialista em Desenvolvimento de Sistemas, Business Intelligence, Automação e Inteligência Artificial",
+    "role": "Especialista em Sistemas, Dados e Inteligência Artificial",
     "story": [
-      "Atuo desenvolvendo soluções tecnológicas para empresas que desejam reduzir custos, eliminar processos manuais, organizar informações e utilizar a tecnologia como diferencial competitivo.",
-      "Minha experiência reúne desenvolvimento de sistemas web, análise de dados, Business Intelligence, automação de processos, infraestrutura em nuvem e Inteligência Artificial. Essa combinação permite entregar soluções completas, desde o planejamento até a implantação em produção.",
-      "Cada projeto é desenvolvido pensando em escalabilidade, segurança, desempenho e facilidade de manutenção. O objetivo não é apenas entregar software, mas criar ferramentas que gerem impacto direto nos resultados da empresa."
+      "Ajudo empresas a transformar processos manuais in soluções inteligentes, desenvolvendo sistemas, automações, dashboards e aplicações com Inteligência Artificial.",
+      "Minha atuação une desenvolvimento de software, análise de dados e infraestrutura para criar soluções completas, desde o planejamento até a implantação em produção.",
+      "Acredito que tecnologia deve gerar resultados concretos. Por isso, cada projeto é desenvolvido para reduzir custos, aumentar produtividade e apoiar o crescimento sustentável das empresas."
     ],
-    "skillsTitle": "Tecnologias que utilizo",
+    "highlightsTitle": "O que me diferencia",
+    "highlights": [
+      "Desenvolvimento Full Stack para soluções sob medida",
+      "Business Intelligence para decisões baseadas em dados",
+      "Inteligência Artificial aplicada aos processos do negócio",
+      "Infraestrutura Cloud preparada para crescer com segurança",
+      "Integração entre sistemas, APIs e bancos de dados",
+      "Foco em redução de custos e aumento da produtividade"
+    ],
+    "skillsTitle": "Especialidades",
     "skills": [
       {
-        "category": "Desenvolvimento Web",
+        "category": "Desenvolvimento de Sistemas",
         "items": [
           "TypeScript",
           "React",
@@ -185,16 +194,16 @@
         ]
       },
       {
-        "category": "Banco de Dados & BI",
+        "category": "Dados & Business Intelligence",
         "items": [
+          "Power BI",
           "SQL",
           "PostgreSQL",
-          "Power BI",
           "Python"
         ]
       },
       {
-        "category": "Inteligência Artificial",
+        "category": "Automação & Inteligência Artificial",
         "items": [
           "Agentes de IA",
           "Chatbots",
@@ -203,7 +212,7 @@
         ]
       },
       {
-        "category": "Infraestrutura",
+        "category": "Cloud & DevOps",
         "items": [
           "Docker",
           "Linux",

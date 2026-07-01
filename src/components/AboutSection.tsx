@@ -3,6 +3,33 @@ import { LucideIcon } from "./LucideIcon";
 import content from "../content/content.json";
 import sobreDeveloper from "../assets/images/sobre_developer_1782697203091.jpeg";
 
+const authorityCards = [
+  {
+    icon: "Code2",
+    title: "Desenvolvimento Full Stack",
+    description: "Sistemas modernos, APIs e aplicações web sob medida.",
+    badge: "🚀"
+  },
+  {
+    icon: "BarChart3",
+    title: "Business Intelligence",
+    description: "Dashboards e indicadores para decisões baseadas em dados.",
+    badge: "📊"
+  },
+  {
+    icon: "Sparkles",
+    title: "Inteligência Artificial",
+    description: "Agentes inteligentes, chatbots e automação de processos.",
+    badge: "🤖"
+  },
+  {
+    icon: "Cloud",
+    title: "Cloud & DevOps",
+    description: "Infraestrutura escalável com Docker, VPS, Linux e Nginx.",
+    badge: "☁️"
+  }
+];
+
 export function AboutSection() {
   return (
     <section id="sobre" className="py-24 bg-slate-950 relative overflow-hidden">
@@ -20,9 +47,17 @@ export function AboutSection() {
             transition={{ duration: 0.5 }}
             className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-white font-display"
           >
-            {content.about.title === "Tecnologia aplicada para impulsionar negócios" ? (
+            {content.about.title.includes("geram resultados") ? (
               <>
-                Tecnologia aplicada para <span className="text-emerald-400 font-extrabold">impulsionar negócios</span>
+                {content.about.title.split("geram resultados")[0]}
+                <span className="text-emerald-400 font-extrabold">geram resultados</span>
+                {content.about.title.split("geram resultados")[1]}
+              </>
+            ) : content.about.title.includes("impulsionar negócios") ? (
+              <>
+                {content.about.title.split("impulsionar negócios")[0]}
+                <span className="text-emerald-400 font-extrabold">impulsionar negócios</span>
+                {content.about.title.split("impulsionar negócios")[1]}
               </>
             ) : (
               content.about.title
@@ -37,6 +72,35 @@ export function AboutSection() {
           >
             {content.about.subtitle}
           </motion.p>
+        </div>
+
+        {/* Authority Cards (below subtitle, before story) */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-20">
+          {authorityCards.map((card, idx) => (
+            <motion.div
+              key={idx}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.4, delay: idx * 0.1 }}
+              className="bg-slate-900/40 hover:bg-slate-900/75 border border-slate-800/80 hover:border-emerald-500/20 rounded-2xl p-6 transition-all duration-300 group flex flex-col justify-between"
+            >
+              <div>
+                <div className="flex items-center justify-between mb-4">
+                  <div className="h-10 w-10 rounded-xl bg-emerald-500/10 flex items-center justify-center text-emerald-400 border border-emerald-500/10 group-hover:bg-emerald-500 group-hover:text-slate-950 transition-all duration-300">
+                    <LucideIcon name={card.icon} size={20} />
+                  </div>
+                  <span className="text-2xl">{card.badge}</span>
+                </div>
+                <h4 className="text-lg font-bold text-white mb-2 font-display group-hover:text-emerald-400 transition-colors">
+                  {card.title}
+                </h4>
+                <p className="text-sm text-slate-400 leading-relaxed">
+                  {card.description}
+                </p>
+              </div>
+            </motion.div>
+          ))}
         </div>
 
         {/* Content Grid */}
