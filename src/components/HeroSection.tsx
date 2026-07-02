@@ -180,6 +180,60 @@ function TypingCodeBlock() {
   );
 }
 
+function SalesPerformanceBox() {
+  const [value, setValue] = useState(0);
+  const [progressWidth, setProgressWidth] = useState(0);
+
+  useEffect(() => {
+    let startTime: number | null = null;
+    const duration = 3000; // 3 seconds to count up
+    const holdDuration = 4000; // 4 seconds to display full value
+    const totalCycle = duration + holdDuration;
+
+    let animationId: number;
+
+    const tick = (now: number) => {
+      if (!startTime) startTime = now;
+      const elapsed = (now - startTime) % totalCycle;
+
+      if (elapsed < duration) {
+        const t = elapsed / duration;
+        // Cubic ease out
+        const ease = 1 - Math.pow(1 - t, 3);
+        setValue(ease * 238.4);
+        setProgressWidth(ease * 84);
+      } else {
+        setValue(238.4);
+        setProgressWidth(84);
+      }
+
+      animationId = requestAnimationFrame(tick);
+    };
+
+    animationId = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(animationId);
+  }, []);
+
+  return (
+    <div className="bg-slate-950/40 p-4 rounded-xl border border-slate-900">
+      <div className="text-[10px] text-slate-500 uppercase tracking-widest font-bold">Performance de Vendas</div>
+      <div className="text-xl font-extrabold text-emerald-400 mt-1">
+        +{value.toFixed(1)}%
+      </div>
+      <div className="h-2 w-full bg-slate-900 rounded-full mt-2 overflow-hidden">
+        <div
+          style={{ width: `${progressWidth}%` }}
+          className="h-full bg-gradient-to-r from-emerald-500 to-teal-400 rounded-full"
+        />
+      </div>
+      <div className="text-[9px] text-slate-500 mt-1 flex justify-between">
+        <span>Meta: R$15k</span>
+        <span>Progresso: {Math.round(progressWidth)}%</span>
+      </div>
+    </div>
+  );
+}
+
 export function HeroSection() {
   const handleScrollTo = (id: string) => {
     const element = document.getElementById(id);
@@ -346,22 +400,7 @@ export function HeroSection() {
                   <div className="h-2.5 w-2.5 rounded-full bg-emerald-500 animate-ping" />
                 </div>
 
-                <div className="bg-slate-950/40 p-4 rounded-xl border border-slate-900">
-                  <div className="text-[10px] text-slate-500 uppercase tracking-widest font-bold">Performance de Vendas</div>
-                  <div className="text-xl font-extrabold text-emerald-400 mt-1">+238.4%</div>
-                  <div className="h-2 w-full bg-slate-900 rounded-full mt-2 overflow-hidden">
-                    <motion.div
-                      initial={{ width: 0 }}
-                      animate={{ width: "84%" }}
-                      transition={{ duration: 1.5, delay: 0.8 }}
-                      className="h-full bg-gradient-to-r from-emerald-500 to-teal-400 rounded-full"
-                    />
-                  </div>
-                  <div className="text-[9px] text-slate-500 mt-1 flex justify-between">
-                    <span>Meta: R$15k</span>
-                    <span>Progresso: 84%</span>
-                  </div>
-                </div>
+                <SalesPerformanceBox />
 
                 <div className="bg-emerald-500/10 p-4 rounded-xl border border-emerald-500/20 text-emerald-400 flex items-center space-x-3 text-xs sm:text-sm">
                   <LucideIcon name="Sparkles" className="animate-pulse" size={18} />
