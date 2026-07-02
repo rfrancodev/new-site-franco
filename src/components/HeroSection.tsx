@@ -1,8 +1,184 @@
+import { useState, useEffect } from "react";
 import { motion } from "motion/react";
 import { LucideIcon } from "./LucideIcon";
 import { TiltCard } from "./TiltCard";
 import content from "../content/content.json";
 import backgroundHome from "../assets/images/background_home_1782697188806.jpg";
+
+interface Token {
+  text: string;
+  className?: string;
+}
+
+interface Line {
+  tokens: Token[];
+}
+
+const ANIMATED_LINES: Line[] = [
+  {
+    tokens: [
+      { text: "class", className: "text-teal-400" },
+      { text: " " },
+      { text: "SolucaoDigital", className: "text-indigo-400" },
+      { text: ":" }
+    ]
+  },
+  {
+    tokens: [
+      { text: "    " },
+      { text: "def", className: "text-teal-400" },
+      { text: " " },
+      { text: "__init__", className: "text-indigo-400" },
+      { text: "(self, cliente):" }
+    ]
+  },
+  {
+    tokens: [
+      { text: "        " },
+      { text: "self.cliente = cliente" }
+    ]
+  },
+  {
+    tokens: [
+      { text: "        " },
+      { text: "self.tecnologias = [" },
+      { text: '"React"', className: "text-amber-300" },
+      { text: ", " },
+      { text: '"IA"', className: "text-amber-300" },
+      { text: ", " },
+      { text: '"BI"', className: "text-amber-300" },
+      { text: "]" }
+    ]
+  },
+  {
+    tokens: [
+      { text: "" }
+    ]
+  },
+  {
+    tokens: [
+      { text: "    " },
+      { text: "def", className: "text-teal-400" },
+      { text: " " },
+      { text: "otimizar_processo", className: "text-indigo-400" },
+      { text: "(self):" }
+    ]
+  },
+  {
+    tokens: [
+      { text: "        " },
+      { text: "agente = ai.get_active_agent()" }
+    ]
+  },
+  {
+    tokens: [
+      { text: "        " },
+      { text: "self.status = " },
+      { text: '"Processo Automatizado ✅"', className: "text-amber-300" }
+    ]
+  },
+  {
+    tokens: [
+      { text: "        " },
+      { text: "return", className: "text-teal-400" },
+      { text: " " },
+      { text: '"Eficiência Máxima Ativada"', className: "text-amber-300" }
+    ]
+  }
+];
+
+function TypingCodeBlock() {
+  const lines = ANIMATED_LINES.map(line => {
+    const text = line.tokens.map(t => t.text).join("");
+    return {
+      ...line,
+      text,
+      length: text.length
+    };
+  });
+
+  let totalLength = 0;
+  const linesWithBounds = lines.map(line => {
+    const start = totalLength;
+    totalLength += line.length + 1;
+    const end = totalLength;
+    return {
+      ...line,
+      start,
+      end
+    };
+  });
+
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isWaiting, setIsWaiting] = useState(false);
+
+  useEffect(() => {
+    if (isWaiting) return;
+
+    const interval = setInterval(() => {
+      setCurrentIndex(prev => {
+        if (prev >= totalLength) {
+          setIsWaiting(true);
+          setTimeout(() => {
+            setCurrentIndex(0);
+            setIsWaiting(false);
+          }, 3000);
+          return prev;
+        }
+        return prev + 1;
+      });
+    }, 45);
+
+    return () => clearInterval(interval);
+  }, [isWaiting, totalLength]);
+
+  return (
+    <div className="text-xs sm:text-sm text-emerald-300 leading-relaxed">
+      {linesWithBounds.map((line, lineIdx) => {
+        if (currentIndex < line.start) {
+          return null;
+        }
+
+        const lineLimit = Math.min(line.length, currentIndex - line.start);
+        const isCurrentLine = currentIndex >= line.start && currentIndex < line.end;
+
+        let charCount = 0;
+
+        return (
+          <div key={lineIdx} className={`${line.text === "" ? "h-4" : "min-h-[1.5rem]"} flex items-center flex-wrap whitespace-pre`}>
+            <span>
+              {line.tokens.map((token, tokIdx) => {
+                if (charCount >= lineLimit) return null;
+
+                const tokenLen = token.text.length;
+                if (charCount + tokenLen <= lineLimit) {
+                  charCount += tokenLen;
+                  return (
+                    <span key={tokIdx} className={token.className}>
+                      {token.text}
+                    </span>
+                  );
+                } else {
+                  const visibleLen = lineLimit - charCount;
+                  const partial = token.text.slice(0, visibleLen);
+                  charCount += visibleLen;
+                  return (
+                    <span key={tokIdx} className={token.className}>
+                      {partial}
+                    </span>
+                  );
+                }
+              })}
+            </span>
+            {isCurrentLine && (
+              <span className="inline-block w-[6px] h-[1.1em] bg-emerald-400 ml-[2px] animate-pulse align-middle" />
+            )}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
 
 export function HeroSection() {
   const handleScrollTo = (id: string) => {
@@ -157,15 +333,7 @@ export function HeroSection() {
                 <div><span className="text-teal-400">from</span> google <span className="text-teal-400">import</span> genai</div>
                 <div>ai = genai.GoogleGenAI(api_key=process.env.GEMINI_API_KEY)</div>
                 <br />
-                <div><span className="text-teal-400">class</span> <span className="text-indigo-400">SolucaoDigital</span>:</div>
-                <div className="pl-4"><span className="text-teal-400">def</span> <span className="text-indigo-400">__init__</span>(self, cliente):</div>
-                <div className="pl-8">self.cliente = cliente</div>
-                <div className="pl-8">self.tecnologias = [<span className="text-amber-300">"React"</span>, <span className="text-amber-300">"IA"</span>, <span className="text-amber-300">"BI"</span>]</div>
-                <br />
-                <div className="pl-4"><span className="text-teal-400">def</span> <span className="text-indigo-400">otimizar_processo</span>(self):</div>
-                <div className="pl-8">agente = ai.get_active_agent()</div>
-                <div className="pl-8">self.status = <span className="text-amber-300">"Processo Automatizado ✅"</span></div>
-                <div className="pl-8"><span className="text-teal-400">return</span> <span className="text-amber-300">"Eficiência Máxima Ativada"</span></div>
+                <TypingCodeBlock />
               </div>
 
               {/* Status/Metas Panel */}
