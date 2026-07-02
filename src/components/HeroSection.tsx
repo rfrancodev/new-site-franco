@@ -135,11 +135,8 @@ function TypingCodeBlock() {
   return (
     <div className="text-xs sm:text-sm text-emerald-300 leading-relaxed">
       {linesWithBounds.map((line, lineIdx) => {
-        if (currentIndex < line.start) {
-          return null;
-        }
-
-        const lineLimit = Math.min(line.length, currentIndex - line.start);
+        const hasStarted = currentIndex >= line.start;
+        const lineLimit = hasStarted ? Math.min(line.length, currentIndex - line.start) : 0;
         const isCurrentLine = currentIndex >= line.start && currentIndex < line.end;
 
         let charCount = 0;
@@ -382,7 +379,7 @@ export function HeroSection() {
             {/* Simulated 3D dashboard layout */}
             <div className="p-4 sm:p-6 grid grid-cols-1 md:grid-cols-12 gap-4 text-left font-mono">
               {/* Code Panel */}
-              <div className="md:col-span-7 bg-slate-950/60 p-4 rounded-xl border border-slate-900 text-xs sm:text-sm text-emerald-300 leading-relaxed overflow-x-auto">
+              <div className="md:col-span-7 bg-slate-950/60 p-4 rounded-xl border border-slate-900 text-xs sm:text-sm text-emerald-300 leading-relaxed overflow-x-auto h-[290px] sm:h-[330px]">
                 <div className="text-slate-500"># Inicializando agente de IA de atendimento</div>
                 <div><span className="text-teal-400">from</span> google <span className="text-teal-400">import</span> genai</div>
                 <div>ai = genai.GoogleGenAI(api_key=process.env.GEMINI_API_KEY)</div>

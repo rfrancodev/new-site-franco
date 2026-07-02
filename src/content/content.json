@@ -97,7 +97,7 @@
         },
         {
           "title": "Áreas de Membros e Portal do Cliente",
-          "description": "Ambiente privado para que parceiros e clientes realizem uploads de documentos, acompanhem o progresso do projeto e emitam ordens de serviço."
+          "description": "Ambiente privado para que parceiros e clientes realizem uploads de documentos e acompanhem o progresso do projeto."
         },
         {
           "title": "Sistemas ERP & Financeiros Customizados",
@@ -118,7 +118,7 @@
         },
         {
           "title": "Análise Inteligente de Documentos",
-          "description": "IA customizada para ler PDF, DOCX e tabelas, extraindo contratos, comparando cláusulas jurídicas e identificando riscos de forma imediata."
+          "description": "IA customizada para ler PDF, DOCX e tabelas, extraindo contratos e comparando cláusulas jurídicas."
         },
         {
           "title": "Base de Conhecimento e FAQ Dinâmico",
@@ -152,15 +152,11 @@
       "title": "Integrações entre Sistemas e APIs",
       "icon": "HelpCircle",
       "description": "Conecte ERPs, CRMs, bancos de dados, APIs e outras plataformas para eliminar retrabalho, automatizar processos e garantir que as informações circulem de forma integrada e segura.",
-      "details": "Criação de pontes de dados seguras e robustas que interligam suas ferramentas (ERP, CRM, gateways de pagamento, e-commerce, bancos de dados locais). Mapeamento de APIs existentes ou desenvolvimento de webhooks sob medida para que seus sistemas trabalhem sincronizados de ponta a ponta sem intervenção humana.",
+      "details": "Criação de pontes de dados seguras e robustas que interligam suas ferramentas (ERP, CRM, bancos de dados locais). Mapeamento de APIs existentes ou desenvolvimento de webhooks sob medida para que seus sistemas trabalhem sincronizados de ponta a ponta sem intervenção humana.",
       "applications": [
         {
           "title": "Sincronização entre CRM e ERP",
           "description": "Integração bidirecional automática para manter cadastros de clientes, faturamento, estoque e status de pedidos sempre alinhados."
-        },
-        {
-          "title": "Integrações com Meios de Pagamento",
-          "description": "Conexão nativa com gateways (Stripe, Asaas, Mercado Pago) para conciliação automática, cobranças recorrentes e tratamento de inadimplência."
         },
         {
           "title": "Webhooks e Processamento em Tempo Real",
@@ -189,7 +185,6 @@
           "Melhor experiência para o cliente"
         ],
         "technologies": [
-          "React",
           "Node.js",
           "Gemini API",
           "Agentes de IA"
@@ -200,7 +195,7 @@
         "title": "Indicadores Inteligentes para Gestão",
         "category": "Business Intelligence",
         "businessImpact": "Tomada de decisão mais rápida através de indicadores confiáveis em tempo real.",
-        "challenge": "Informações espalhadas in planilhas e diferentes sistemas dificultavam o acompanhamento dos indicadores e atrasavam decisões importantes.",
+        "challenge": "Informações espalhadas em planilhas e diferentes sistemas dificultavam o acompanhamento dos indicadores e atrasavam decisões importantes.",
         "solution": "Desenvolvimento de dashboards Power BI integrando ERP, CRM e bancos de dados em um único painel gerencial atualizado automaticamente.",
         "result": [
           "Indicadores centralizados",
@@ -229,7 +224,6 @@
           "Maior produtividade"
         ],
         "technologies": [
-          "React",
           "Node.js",
           "Docker",
           "API REST"
@@ -241,7 +235,7 @@
         "category": "IA Generativa",
         "businessImpact": "Uso seguro da Inteligência Artificial para aumentar produtividade e preservar o conhecimento da empresa.",
         "challenge": "Empresas precisavam utilizar Inteligência Artificial preservando dados internos e centralizando o conhecimento corporativo.",
-        "solution": "Desenvolvimento de uma plataforma privada baseada em Open WebUI com agentes inteligentes, RAG e integração aos bancos de dados corporativos.",
+        "solution": "Desenvolvimento de uma plataforma privada com agentes inteligentes, RAG e integração a bancos de dados corporativos.",
         "result": [
           "IA integrada aos processos internos",
           "Consultas inteligentes a documentos",
@@ -265,7 +259,7 @@
     "name": "Rafael Franco",
     "role": "Especialista em Sistemas, Dados e Inteligência Artificial",
     "story": [
-      "Ajudo empresas a transformar processos manuais in soluções inteligentes, desenvolvendo sistemas, automações, dashboards e aplicações com Inteligência Artificial.",
+      "Ajudo empresas a transformar processos manuais em soluções inteligentes, desenvolvendo sistemas, automações, dashboards e aplicações com Inteligência Artificial.",
       "Minha atuação une desenvolvimento de software, análise de dados e infraestrutura para criar soluções completas, desde o planejamento até a implantação em produção.",
       "Acredito que tecnologia deve gerar resultados concretos. Por isso, cada projeto é desenvolvido para reduzir custos, aumentar produtividade e apoiar o crescimento sustentável das empresas."
     ],
@@ -284,7 +278,6 @@
         "category": "Desenvolvimento de Sistemas",
         "items": [
           "TypeScript",
-          "React",
           "Node.js",
           "Express",
           "Tailwind CSS"
@@ -312,7 +305,6 @@
         "category": "Cloud & DevOps",
         "items": [
           "Docker",
-          "Linux",
           "Nginx",
           "VPS",
           "Git"
@@ -326,18 +318,18 @@
     "items": [
       {
         "name": "Márcio G.",
-        "role": "CEO",
-        "text": "Precisávamos automatizar nossa operação comercial e reduzir o tempo gasto com atendimento inicial. A solução desenvolvida superou nossas expectativas e aumentou significativamente a produtividade da equipe."
+        "role": "Empresário",
+        "text": "Precisávamos automatizar nossa operação comercial e reduzir o tempo gasto com atendimento inicial. A solução desenvolvida aumentou a produtividade da equipe."
       },
       {
         "name": "Alessandra S.",
-        "role": "Diretora de Operações",
-        "text": "Hoje conseguimos acompanhar indicadores estratégicos em tempo real através dos dashboards. As decisões ficaram muito mais rápidas e baseadas em dados confiáveis."
+        "role": "Gerente",
+        "text": "Hoje conseguimos acompanhar indicadores em tempo real através do Power Bi. As decisões ficaram muito mais rápidas e confiáveis."
       },
       {
         "name": "Eduardo M.",
-        "role": "Gerente de Tecnologia",
-        "text": "Excelente capacidade técnica e visão de negócio. Além da implementação da infraestrutura, recebemos uma solução preparada para crescer junto com a empresa."
+        "role": "Empreendedor",
+        "text": "Excelente solução. Além da implementação, recebemos uma solução preparada para crescer junto com e empresa."
       }
     ]
   },

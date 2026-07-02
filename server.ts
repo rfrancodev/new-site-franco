@@ -91,7 +91,32 @@ app.post("/api/contact", async (req, res) => {
       });
 
       if (!response.ok) {
-        throw new Error(`Erro na resposta do n8n: ${response.statusText}`);
+        let errorBody = "";
+        try {
+          errorBody = await response.text();
+        } catch (e) {
+          errorBody = "Não foi possível obter detalhes do corpo da resposta.";
+        }
+
+        const statusMsg = response.statusText ? ` - ${response.statusText}` : "";
+        console.error(`[Erro n8n] Falha na integração. Status: ${response.status}${statusMsg}. Detalhes: ${errorBody}`);
+
+        let friendlyMessage = "O serviço de automação (n8n) retornou um erro ao processar o formulário.";
+        if (response.status === 404) {
+          friendlyMessage = "O endpoint do webhook do n8n não foi encontrado (HTTP 404). Por favor, verifique se o fluxo correspondente está ativo e publicado no seu painel do n8n.";
+        } else if (response.status === 401 || response.status === 403) {
+          friendlyMessage = "Falha de autenticação ao conectar com o n8n (HTTP 401/403). Verifique as chaves ou credenciais de acesso do webhook.";
+        } else if (response.status >= 500) {
+          friendlyMessage = `Ocorreu um erro interno no servidor do n8n (HTTP ${response.status}). Verifique as execuções e os logs de erro no painel do seu n8n.`;
+        } else {
+          friendlyMessage = `Erro retornado pelo n8n (HTTP ${response.status}): ${errorBody.slice(0, 150) || "Sem corpo de erro detalhado"}`;
+        }
+
+        return res.status(response.status).json({
+          success: false,
+          error: friendlyMessage,
+          details: `n8n ${response.status}${statusMsg}: ${errorBody}`,
+        });
       }
 
       const result = await response.json().catch(() => ({ status: "success" }));
@@ -116,7 +141,28 @@ app.post("/api/contact", async (req, res) => {
       });
 
       if (!response.ok) {
-        throw new Error(`Erro na resposta do Google Apps Script: ${response.statusText}`);
+        let errorBody = "";
+        try {
+          errorBody = await response.text();
+        } catch (e) {
+          errorBody = "Não foi possível obter detalhes do corpo da resposta.";
+        }
+
+        const statusMsg = response.statusText ? ` - ${response.statusText}` : "";
+        console.error(`[Erro Google Sheets] Falha na integração. Status: ${response.status}${statusMsg}. Detalhes: ${errorBody}`);
+
+        let friendlyMessage = "O serviço de integração com o Google Sheets retornou um erro.";
+        if (response.status === 404) {
+          friendlyMessage = "A URL do script do Google Sheets não foi encontrada (HTTP 404). Certifique-se de que o Apps Script foi implantado como um Web App e que a URL está correta.";
+        } else {
+          friendlyMessage = `Erro retornado pelo Google Sheets (HTTP ${response.status}): ${errorBody.slice(0, 150) || "Sem corpo de erro detalhado"}`;
+        }
+
+        return res.status(response.status).json({
+          success: false,
+          error: friendlyMessage,
+          details: `Google Sheets ${response.status}${statusMsg}: ${errorBody}`,
+        });
       }
 
       const result = await response.json().catch(() => ({ status: "success" }));
@@ -141,8 +187,8 @@ app.post("/api/contact", async (req, res) => {
     console.error("Erro ao processar contato:", error);
     return res.status(500).json({
       success: false,
-      error: "Ocorreu um erro interno no servidor ao tentar enviar seus dados.",
-      details: error.message,
+      error: "Ocorreu um erro interno no servidor ao tentar processar seus dados.",
+      details: error.message || error.toString(),
     });
   }
 });
