@@ -44,8 +44,13 @@ O ecossistema do projeto foi selecionado estrategicamente para fornecer escalabi
 2.  **Formulário de Orçamentos com Dupla Camada de Validação:**
     *   **No Cliente (React):** Máscara automática de digitação inteligente para o WhatsApp, validação do padrão RFC de e-mails, validações de tamanho mínimo para evitar mensagens vazias ou inválidas.
     *   **No Servidor (Express):** Sanitização rigorosa dos dados antes de qualquer repasse para webhooks, garantindo a integridade dos dados integrados à API.
+    *   **Tratamento de Erros Robusto:** Retornos HTTP ricos e informativos com descritivos amigáveis e específicos de erros do n8n (como Webhook Inativo/HTTP 404, Falha de Autenticação/HTTP 401/403 ou erros internos no painel de automação) e do Google Sheets para facilitar a depuração e dar feedback preciso ao usuário.
 3.  **Roteamento Inteligente de Webhooks:**
     *   O servidor analisa as variáveis de ambiente em tempo de execução. Se encontrar `N8N_WEBHOOK_URL`, os dados do formulário são disparados para o fluxo do n8n instantaneamente. Se encontrar `GOOGLE_SHEETS_SCRIPT_URL`, faz o salvamento na planilha do Google Sheets. Caso nenhuma esteja presente, entra em modo **Sandbox Seguro** explicando o funcionamento.
+4.  **Simulador de Código Interativo "Solutions Engine":**
+    *   **Typing Animation Infinita:** Um simulador realista de digitação de código Python que renderiza recursivamente e em tempo de execução a sintaxe estruturada da classe `SolucaoDigital`.
+    *   **Performance Progressiva Dinâmica:** Um contador numérico de crescimento animado acompanhando um progresso de barra dinâmico e contínuo para a métrica de "Performance de Vendas" de 0% até +238.4%, sincronizado com a meta e o progresso em tempo real.
+    *   **Estabilidade Visual e Responsividade:** Dimensões de contêiner calibradas de forma fixa (`h-[290px] sm:h-[330px]`) para evitar qualquer variação ou salto visual (layout shift) durante o ciclo da animação de digitação em qualquer dispositivo.
 
 ---
 
