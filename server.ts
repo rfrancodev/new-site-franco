@@ -101,6 +101,26 @@ app.post("/api/contact", async (req, res) => {
         const statusMsg = response.statusText ? ` - ${response.statusText}` : "";
         console.error(`[Erro n8n] Falha na integração. Status: ${response.status}${statusMsg}. Detalhes: ${errorBody}`);
 
+        // Tratamento especial para erro de nó de resposta ausente (o n8n aceitou o webhook e iniciou o workflow, mas não soube como responder)
+        if (errorBody.includes("No Respond to Webhook node found in the workflow")) {
+          console.warn("[Aviso n8n] Os dados foram enviados com sucesso e o fluxo de trabalho foi disparado no n8n, mas o n8n retornou erro 500 devido à falta do nó 'Respond to Webhook' ou configuração de resposta inadequada.");
+          return res.status(200).json({
+            success: true,
+            message: "Sua solicitação foi enviada com sucesso! (Nota: O fluxo do seu n8n foi acionado, mas para evitar alertas, certifique-se de adicionar um nó 'Respond to Webhook' ou alterar a resposta do Webhook para 'Immediately' nas configurações do nó Webhook no n8n).",
+            data: { status: "success", warning: "Webhook acionado, mas falta o nó de resposta no workflow do n8n." },
+          });
+        }
+
+        // Tratamento especial para erro de execução interna do fluxo no n8n (o webhook foi atingido e o fluxo iniciou, mas algum nó interno falhou)
+        if (errorBody.includes("There was a problem executing the workflow")) {
+          console.error("[Erro n8n] Os dados do webhook foram recebidos e o fluxo foi acionado, mas ocorreu um erro em algum nó do fluxo do n8n.");
+          return res.status(500).json({
+            success: false,
+            error: "O webhook do n8n recebeu os dados e iniciou o fluxo, mas ocorreu um erro interno na execução do seu workflow no n8n (HTTP 500).",
+            details: "Dica: Verifique a aba 'Executions' (Execuções) ou os logs do seu fluxo no painel do n8n para identificar qual nó falhou ou se há algum campo obrigatório incorreto.",
+          });
+        }
+
         let friendlyMessage = "O serviço de automação (n8n) retornou um erro ao processar o formulário.";
         if (response.status === 404) {
           friendlyMessage = "O endpoint do webhook do n8n não foi encontrado (HTTP 404). Por favor, verifique se o fluxo correspondente está ativo e publicado no seu painel do n8n.";
