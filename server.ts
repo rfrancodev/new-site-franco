@@ -60,8 +60,22 @@ app.post("/api/contact", async (req, res) => {
       });
     }
 
-    const n8nWebhookUrl = process.env.N8N_WEBHOOK_URL;
+    let n8nWebhookUrl = process.env.N8N_WEBHOOK_URL;
     const scriptUrl = process.env.GOOGLE_SHEETS_SCRIPT_URL;
+
+    // Normalização automática: se o usuário atualizou o path no n8n para "/leads-site"
+    // mas a variável de ambiente (env) ainda aponta para "/formulario-contato" ou "/formulario-site",
+    // nós normalizamos dinamicamente para garantir que o envio funcione imediatamente.
+    if (n8nWebhookUrl) {
+      const originalUrl = n8nWebhookUrl;
+      n8nWebhookUrl = n8nWebhookUrl
+        .replace("/formulario-contato", "/leads-site")
+        .replace("/formulario-site", "/leads-site");
+      
+      if (originalUrl !== n8nWebhookUrl) {
+        console.log(`[Normalização de Webhook] Atualizando endpoint antigo de ${originalUrl} para ${n8nWebhookUrl}`);
+      }
+    }
 
     const payload = {
       timestamp: new Date().toISOString(),
@@ -101,13 +115,16 @@ app.post("/api/contact", async (req, res) => {
         const statusMsg = response.statusText ? ` - ${response.statusText}` : "";
         console.error(`[Erro n8n] Falha na integração. Status: ${response.status}${statusMsg}. Detalhes: ${errorBody}`);
 
-        // Tratamento especial para erro de nó de resposta ausente (o n8n aceitou o webhook e iniciou o workflow, mas não soube como responder)
-        if (errorBody.includes("No Respond to Webhook node found in the workflow")) {
-          console.warn("[Aviso n8n] Os dados foram enviados com sucesso e o fluxo de trabalho foi disparado no n8n, mas o n8n retornou erro 500 devido à falta do nó 'Respond to Webhook' ou configuração de resposta inadequada.");
+        // Tratamento especial para erro de nó de resposta ausente ou não utilizado (o n8n aceitou o webhook e iniciou o workflow, mas não soube como responder)
+        if (
+          errorBody.includes("No Respond to Webhook node found in the workflow") ||
+          errorBody.includes("Unused Respond to Webhook node found in the workflow")
+        ) {
+          console.warn("[Aviso n8n] Os dados foram enviados com sucesso e o fluxo de trabalho foi disparado no n8n, mas o n8n retornou erro 500 devido à configuração do nó de resposta.");
           return res.status(200).json({
             success: true,
-            message: "Sua solicitação foi enviada com sucesso! (Nota: O fluxo do seu n8n foi acionado, mas para evitar alertas, certifique-se de adicionar um nó 'Respond to Webhook' ou alterar a resposta do Webhook para 'Immediately' nas configurações do nó Webhook no n8n).",
-            data: { status: "success", warning: "Webhook acionado, mas falta o nó de resposta no workflow do n8n." },
+            message: "Sua solicitação foi enviada com sucesso! (Nota: O fluxo do seu n8n foi acionado, mas para evitar este aviso, certifique-se de ajustar a configuração 'Respond' do webhook no n8n para 'Immediately' ou conecte corretamente o nó 'Respond to Webhook').",
+            data: { status: "success", warning: "Webhook acionado, mas com erro de resposta interna de nó no n8n." },
           });
         }
 

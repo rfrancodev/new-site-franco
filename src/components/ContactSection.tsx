@@ -76,14 +76,12 @@ export function ContactSection() {
     // Client-side validation: 1. Field presence
     if (!formData.name.trim() || !formData.whatsapp.trim() || !formData.email.trim() || !formData.service || !formData.message.trim()) {
       setErrorMessage("Por favor, preencha todos os campos obrigatórios (*).");
-      setSubmitStatus("error");
       return;
     }
 
     // Client-side validation: 2. Name validation
     if (formData.name.trim().length < 3) {
       setErrorMessage("Por favor, insira seu nome completo ou pelo menos 3 caracteres.");
-      setSubmitStatus("error");
       return;
     }
 
@@ -91,7 +89,6 @@ export function ContactSection() {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(formData.email.trim())) {
       setErrorMessage("Por favor, insira um e-mail válido (exemplo: nome@empresa.com.br).");
-      setSubmitStatus("error");
       return;
     }
 
@@ -99,14 +96,12 @@ export function ContactSection() {
     const cleanPhone = formData.whatsapp.replace(/\D/g, "");
     if (cleanPhone.length < 10 || cleanPhone.length > 15) {
       setErrorMessage("Por favor, insira um WhatsApp válido com DDD (exemplo: (11) 99999-9999).");
-      setSubmitStatus("error");
       return;
     }
 
     // Client-side validation: 5. Message length validation
     if (formData.message.trim().length < 10) {
       setErrorMessage("Por favor, detalhe seu projeto ou necessidade com pelo menos 10 caracteres.");
-      setSubmitStatus("error");
       return;
     }
 
@@ -208,13 +203,19 @@ export function ContactSection() {
         // Se NÃO estiver em iframe, o redirecionamento direto por window.location.href é 100% confiável e nunca bloqueado.
         window.location.href = url;
       } else {
-        // Se estiver em iframe, tenta atualizar a janela pai. 
-        // Se o sandbox do iframe proibir (cross-origin), o bloco try-catch evita erros fatais.
-        // Importante: NÃO podemos fazer window.location.href = url dentro do iframe pois wa.me recusa embedding (X-Frame-Options: DENY), causando tela branca.
+        // Se estiver em iframe, evitamos acessar diretamente window.top.location para não disparar erro de segurança (cross-origin).
+        // Em vez disso, tentamos abrir via clique programático em elemento link temporário com target="_blank".
+        // Caso o navegador bloqueie por falta de interação do usuário, o link amigável já estará renderizado na tela.
         try {
-          window.top!.location.href = url;
+          const link = document.createElement("a");
+          link.href = url;
+          link.target = "_blank";
+          link.rel = "noopener noreferrer";
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
         } catch (e) {
-          console.error("Erro ao redirecionar janela principal a partir do iframe:", e);
+          console.error("Erro ao simular clique no iframe:", e);
         }
       }
     }
@@ -318,10 +319,10 @@ export function ContactSection() {
                     {content.contact.form.successText.replace("{name}", formData.name)}
                   </p>
 
-                  <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4 w-full max-w-sm">
+                  <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4 w-full max-w-xl">
                     <button
                       onClick={handleWhatsAppDirect}
-                      className="w-full py-3.5 bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-black rounded-xl flex items-center justify-center space-x-2 transition-all cursor-pointer"
+                      className="w-full sm:w-auto px-8 py-3.5 bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-black rounded-xl flex items-center justify-center space-x-2 transition-all cursor-pointer whitespace-nowrap shadow-lg shadow-emerald-500/10 hover:shadow-xl hover:shadow-emerald-500/20 transform hover:-translate-y-0.5"
                     >
                       <LucideIcon name="MessageSquare" size={18} />
                       <span>Falar no WhatsApp Agora</span>
@@ -329,7 +330,7 @@ export function ContactSection() {
                     
                     <button
                       onClick={handleReset}
-                      className="w-full py-3.5 bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-white font-bold rounded-xl border border-slate-800 transition-all cursor-pointer"
+                      className="w-full sm:w-auto px-8 py-3.5 bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-white font-bold rounded-xl border border-slate-800 transition-all cursor-pointer whitespace-nowrap transform hover:-translate-y-0.5"
                     >
                       Enviar Nova Solicitação
                     </button>
@@ -567,7 +568,7 @@ export function ContactSection() {
                   </div>
 
                   {/* Error Notification inside panel */}
-                  {submitStatus === "error" && (
+                  {errorMessage && submitStatus === "idle" && (
                     <motion.div
                       initial={{ opacity: 0, y: -10 }}
                       animate={{ opacity: 1, y: 0 }}
