@@ -127,6 +127,64 @@ Para iniciar o servidor compilado:
 npm start
 ```
 
+### 5. Comando de Deploy (Deploy Command)
+Para publicar a aplicação em produção, você pode usar os comandos abaixo dependendo do seu ambiente de hospedagem:
+
+#### Opção A: Deploy no Google Cloud Run (Altamente Recomendado)
+Esta aplicação full-stack está empacotada e pronta para ser implantada diretamente no **Google Cloud Run**. Execute o comando a seguir no terminal para compilar e implantar em minutos:
+```bash
+gcloud run deploy portfolio-rafael-franco \
+  --source . \
+  --port 3000 \
+  --allow-unauthenticated \
+  --set-env-vars="N8N_WEBHOOK_URL=SUA_URL_AQUI"
+```
+
+#### Opção B: Deploy via Docker Container
+Se estiver hospedando em VPS tradicional (DigitalOcean, AWS, Hetzner, etc.), você pode construir e rodar um container Docker:
+```bash
+# Build local da imagem Docker
+docker build -t portfolio-rafael-franco .
+
+# Executar o container mapeando a porta 3000
+docker run -d -p 3000:3000 --env-file .env --name portfolio-app portfolio-rafael-franco
+```
+
+---
+
+## 🔗 Integração com o n8n e Fluxo de Automação
+
+O formulário de contato do site é integrado ao **n8n** através de uma ponte resiliente e segura configurada no backend Express (`server.ts`). Isso protege a URL do seu webhook e garante validações de segurança cruciais antes de despachar os leads.
+
+### Formato de Envio dos Dados (JSON Payload)
+O backend Express recebe os dados do formulário de contato, valida os campos e envia a requisição HTTP POST para o seu webhook do n8n utilizando o seguinte formato JSON estruturado:
+
+```json
+{
+  "timestamp": "2026-07-10T17:15:16.000Z",
+  "name": "Rafael Franco Teste Produção",
+  "whatsapp": "11999999999",
+  "email": "rfrancodev@gmail.com",
+  "company": "Franco Digital",
+  "service": "IA Generativa",
+  "budget": "R$ 5k - R$ 15k",
+  "message": "Mensagem de teste de envio de formulário para validação do webhook n8n de produção.",
+  "origin": "Formulário de Contato - Produção"
+}
+```
+
+### Tratamento Avançado de Erros e Resiliência
+Desenvolvemos uma camada de inteligência no backend dedicada a interceptar as respostas do n8n para melhorar a experiência do usuário e facilitar a manutenção do fluxo pelo desenvolvedor:
+
+1. **Correção de "Respond to Webhook" ausente (HTTP 500 do n8n):**
+   * *Cenário:* Se o seu fluxo do n8n for acionado com sucesso, mas o workflow no n8n não contiver um nó de resposta ou o webhook estiver configurado para responder somente quando o último nó for executado, o n8n retorna o erro `No Respond to Webhook node found in the workflow` (HTTP 500).
+   * *Solução:* O backend Express intercepta essa mensagem específica e **interpreta como Sucesso**, pois a automação de fato iniciou. Ele informa ao usuário final que o formulário foi enviado e adiciona um aviso técnico no console sobre como ajustar a resposta do webhook no n8n (alterando nas configurações do nó Webhook de "When last node finishes" para "Immediately", ou adicionando o nó de resposta).
+2. **Tratamento de Falhas Internas de Execução (HTTP 500 de Workflow):**
+   * *Cenário:* Caso o n8n receba os dados do lead, mas algum nó interno do seu workflow falhe (ex: falha ao salvar na planilha, erro de API do CRM ou credenciais expiradas), ele retorna `There was a problem executing the workflow`.
+   * *Solução:* O backend capta esse erro e exibe uma dica amigável e focada na depuração, recomendando que o administrador verifique a aba **"Executions" (Execuções)** ou logs de erro no painel do n8n para identificar qual nó específico falhou.
+3. **Detecção de Webhook Não Publicado (HTTP 404):**
+   * Se o webhook retornar `404 - Not Found` (comum ao esquecer de ativar o fluxo de produção ou ao usar URL de teste expirada), a aplicação informa de forma didática os procedimentos para publicar e ativar o workflow no n8n.
+
 ---
 
 ## 💡 Guia de Referência de Boas Práticas (Para outros Desenvolvedores)
