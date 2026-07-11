@@ -21,7 +21,9 @@ import {
   Send,
   Check,
   Loader2,
-  ChevronDown
+  ChevronDown,
+  AlertTriangle,
+  Terminal
 } from "lucide-react";
 
 interface LucideIconProps {
@@ -53,7 +55,9 @@ export function LucideIcon({ name, className = "", size = 24 }: LucideIconProps)
     Send,
     Check,
     Loader2,
-    ChevronDown
+    ChevronDown,
+    AlertTriangle,
+    Terminal
   };
 
   const IconComponent = icons[name] || HelpCircle;

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { LucideIcon } from "./LucideIcon";
 import content from "../content/content.json";
@@ -31,6 +31,7 @@ export function ContactSection() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error">("idle");
   const [errorMessage, setErrorMessage] = useState("");
+  const [countdown, setCountdown] = useState(3);
 
   const formatWhatsApp = (value: string) => {
     // Remove all non-digits
@@ -171,6 +172,81 @@ export function ContactSection() {
     window.open(url, "_blank");
   };
 
+  const getWhatsAppFallbackUrl = useCallback(() => {
+    const name = formData.name.trim() || "Interessado";
+    const service = formData.service || "Solução Digital";
+    const email = formData.email.trim() || "Não informado";
+    const phone = formData.whatsapp.trim() || "Não informado";
+    const company = formData.company.trim() || "Não informada";
+    const budget = formData.budget || "Não informado";
+    const message = formData.message.trim() || "Sem mensagem adicional";
+
+    const customText = `Olá Rafael! O envio do formulário pelo site apresentou uma instabilidade na automação, então estou enviando os dados diretamente por aqui:
+
+*Nome:* ${name}
+*WhatsApp:* ${phone}
+*E-mail:* ${email}
+*Empresa:* ${company}
+*Serviço:* ${service}
+*Orçamento:* ${budget}
+
+*Mensagem:* ${message}`;
+
+    return `https://wa.me/${content.site.whatsappNumber}?text=${encodeURIComponent(customText)}`;
+  }, [formData]);
+
+  const handleWhatsAppFallback = useCallback(() => {
+    const url = getWhatsAppFallbackUrl();
+    const isIframe = window.self !== window.top;
+    
+    // Tenta abrir em nova aba primeiro (preferência do usuário)
+    const newWindow = window.open(url, "_blank");
+    
+    // Se window.open falhar (bloqueador de popups do navegador ou restrições de iframe):
+    if (!newWindow || newWindow.closed || typeof newWindow.closed === "undefined") {
+      if (!isIframe) {
+        // Se NÃO estiver em iframe, o redirecionamento direto por window.location.href é 100% confiável e nunca bloqueado.
+        window.location.href = url;
+      } else {
+        // Se estiver em iframe, tenta atualizar a janela pai. 
+        // Se o sandbox do iframe proibir (cross-origin), o bloco try-catch evita erros fatais.
+        // Importante: NÃO podemos fazer window.location.href = url dentro do iframe pois wa.me recusa embedding (X-Frame-Options: DENY), causando tela branca.
+        try {
+          window.top!.location.href = url;
+        } catch (e) {
+          console.error("Erro ao redirecionar janela principal a partir do iframe:", e);
+        }
+      }
+    }
+  }, [getWhatsAppFallbackUrl]);
+
+  // 1. Efeito para controlar o decremento do timer de forma pura
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+    if (submitStatus === "error") {
+      setCountdown(3);
+      interval = setInterval(() => {
+        setCountdown((prev) => {
+          if (prev <= 1) {
+            clearInterval(interval);
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+    }
+    return () => {
+      if (interval) clearInterval(interval);
+    };
+  }, [submitStatus]);
+
+  // 2. Efeito separado para disparar o redirecionamento quando o countdown chega a exatamente 0
+  useEffect(() => {
+    if (submitStatus === "error" && countdown === 0) {
+      handleWhatsAppFallback();
+    }
+  }, [countdown, submitStatus, handleWhatsAppFallback]);
+
   return (
     <section id="contato" className="py-24 bg-slate-950 relative overflow-hidden">
       {/* Ambient background glows */}
@@ -256,6 +332,57 @@ export function ContactSection() {
                       className="w-full py-3.5 bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-white font-bold rounded-xl border border-slate-800 transition-all cursor-pointer"
                     >
                       Enviar Nova Solicitação
+                    </button>
+                  </div>
+                </motion.div>
+              ) : submitStatus === "error" ? (
+                /* Error/Fallback Message Panel with Auto-Redirect */
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  className="text-center py-12 flex flex-col items-center"
+                >
+                  <div className="h-20 w-20 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center justify-center mb-6 relative">
+                    <div className="absolute inset-0 rounded-full border-2 border-emerald-500/10 border-t-emerald-400 animate-spin" />
+                    <span className="text-xl font-black font-display text-emerald-400">{countdown}s</span>
+                  </div>
+                  
+                  <h3 className="text-2xl font-black text-white font-display max-w-md mx-auto leading-tight">
+                    Sua mensagem será redirecionada automaticamente em {countdown}s
+                  </h3>
+                  
+                  <p className="mt-4 text-slate-300 max-w-lg mx-auto leading-relaxed text-sm sm:text-base">
+                    Detectamos uma instabilidade temporária em nossa integração automática pelo site.
+                    <br />
+                    <span className="text-emerald-400 font-bold">Mas seus dados já estão salvos e prontos para envio!</span>
+                  </p>
+
+                  {/* Elegant link helper if countdown reaches 0 and redirection was blocked by browser pop-up blocker */}
+                  {countdown === 0 && (
+                    <motion.p
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="mt-6 text-sm text-emerald-400 max-w-md mx-auto bg-emerald-500/5 border border-emerald-500/10 rounded-xl p-4 leading-relaxed"
+                    >
+                      Se a página do WhatsApp não abriu automaticamente devido ao bloqueador de pop-ups do seu navegador,{" "}
+                      <a
+                        href={getWhatsAppFallbackUrl()}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="underline font-black text-emerald-300 hover:text-emerald-200 transition-colors inline-flex items-center gap-1"
+                      >
+                        clique aqui para iniciar a conversa <LucideIcon name="MessageSquare" size={14} />
+                      </a>
+                    </motion.p>
+                  )}
+
+                  <div className="mt-8 flex justify-center w-full max-w-sm">
+                    <button
+                      onClick={() => setSubmitStatus("idle")}
+                      className="w-full py-3.5 bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-white font-bold rounded-xl border border-slate-800 transition-all cursor-pointer"
+                    >
+                      Voltar e Tentar Novamente
                     </button>
                   </div>
                 </motion.div>

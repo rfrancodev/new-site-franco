@@ -184,6 +184,16 @@ Desenvolvemos uma camada de inteligência no backend dedicada a interceptar as r
    * *Solução:* O backend capta esse erro e exibe uma dica amigável e focada na depuração, recomendando que o administrador verifique a aba **"Executions" (Execuções)** ou logs de erro no painel do n8n para identificar qual nó específico falhou.
 3. **Detecção de Webhook Não Publicado (HTTP 404):**
    * Se o webhook retornar `404 - Not Found` (comum ao esquecer de ativar o fluxo de produção ou ao usar URL de teste expirada), a aplicação informa de forma didática os procedimentos para publicar e ativar o workflow no n8n.
+4. **Mecanismo de Redirecionamento Automático de Contingência (WhatsApp):**
+   * *Cenário:* Caso ocorra alguma falha de conexão com o servidor Express, expiração ou falha técnica no webhook do n8n (ex: HTTP 404).
+   * *Solução (Foco em UX e Resiliência):* 
+     * **Redução de Ruído Cognitivo (Anti-Susto):** Removemos qualquer ícone de alerta agressivo (triângulos de atenção) e detalhes técnicos brutos do erro do console (como logs de HTTP 404) para evitar assustar ou confundir o cliente. O visual permanece elegante, limpo e integrado à identidade visual escura e moderna do portfólio.
+     * **Redirecionamento Inteligente de 3 segundos:** Apresentamos um indicador visual circular de carregamento progressivo e um countdown de 3 segundos. Logo após esse intervalo, o sistema executa o envio automático das informações salvas diretamente para o WhatsApp do Rafael (`35 999057566`).
+     * **Prevenção de Páginas Brancas (Controle de Iframe & Segurança):**
+       * Links do WhatsApp (`wa.me`) possuem cabeçalhos de segurança estritos como `X-Frame-Options: DENY`, o que impede sua exibição dentro de iframes (como o ambiente de visualização do AI Studio ou portais incorporados), gerando uma tela branca.
+       * Para solucionar isso, o sistema tenta abrir em uma nova aba com `window.open()`. Se o bloqueador de pop-ups do navegador ou as restrições do iframe impedirem, o código detecta e executa um redirecionamento seguro da página de nível superior (`window.top.location.href`) por meio de tratamento de exceções cross-origin (`try-catch`).
+       * Como uma última linha de defesa opcional contra bloqueadores de pop-ups rigorosos, quando o tempo esgota, um link direto amigável e focado em conversão é exibido no painel para que o lead possa clicar e iniciar a conversa com um único clique.
+     * **Controle de Navegação:** O cliente sempre mantém o controle, com um botão nítido de **"Voltar e Tentar Novamente"** para poder corrigir informações ou re-submeter o formulário quando quiser.
 
 ---
 
