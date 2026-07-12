@@ -110,7 +110,20 @@ export function ContactSection() {
     setErrorMessage("");
 
     try {
-      const apiBaseUrl = import.meta.env.VITE_API_URL || "";
+      let apiBaseUrl = import.meta.env.VITE_API_URL || "";
+      
+      // Detecção inteligente de ambiente e fallback de produção automática
+      if (!apiBaseUrl) {
+        const hostname = window.location.hostname;
+        const isLocal = hostname === "localhost" || hostname === "127.0.0.1";
+        const isStudioPreview = hostname.includes("us-west2.run.app") && (hostname.includes("ais-dev") || hostname.includes("ais-pre"));
+        
+        if (!isLocal && !isStudioPreview) {
+          // Fallback automático para o backend de produção do Google Cloud Run (AI Studio)
+          apiBaseUrl = "https://ais-pre-dwwk7tdp3w422qgquzvkxx-6392973582.us-west2.run.app";
+        }
+      }
+
       const response = await fetch(`${apiBaseUrl}/api/contact`, {
         method: "POST",
         headers: {

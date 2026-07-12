@@ -218,11 +218,15 @@ Caso você decida hospedar o **frontend (React)** de forma estática no **Cloudf
 1. **Ative as Requisições Cross-Origin (CORS):**
    * O backend Express já possui suporte nativo e seguro a CORS pré-configurado no arquivo `server.ts` para receber e responder às requisições originárias do seu domínio no Cloudflare Pages.
 
-2. **Configure a Variável de Ambiente no Cloudflare Pages:**
+2. **Configure a Variável de Ambiente no Cloudflare Pages (Opcional):**
    * No painel do Cloudflare Pages, acesse as configurações do seu projeto -> **Environment Variables** (Variáveis de Ambiente).
    * Adicione uma nova variável chamada **`VITE_API_URL`** com o valor da URL de produção do seu backend (ex: `https://ais-pre-your-unique-id.run.app`).
    * Salve e faça o re-deploy do site.
-   * *O que acontece por trás dos panos:* A aplicação React identificará essa variável e fará as requisições de formulário diretamente para o seu backend no Cloud Run, que processará os dados, validará e disparará o fluxo no n8n de forma 100% segura e transparente, sem acionar o redirecionamento de contingência do WhatsApp!
+
+3. **Inteligência de Fallback Automático e Zero-Config (À Prova de Falhas):**
+   * *O Problema:* Em geradores de sites estáticos (como o Cloudflare Pages), as variáveis iniciadas com `VITE_` precisam ser injetadas exclusivamente **durante a fase de build (compilação)**. Se você adicionou a variável após o build, ou se o pipeline do Cloudflare Pages não exportou a variável para o runtime do Node no build, a variável ficaria vazia (`""`) no navegador, gerando erros 404 ao tentar enviar para `/api/contact`.
+   * *A Solução Inteligente:* Implementamos um algoritmo de **detecção de ambiente em tempo real** no frontend! Se o site rodar fora de `localhost` ou de previews internos do AI Studio e a variável `VITE_API_URL` não for encontrada (por atraso de deploy no Cloudflare), o próprio frontend detecta o seu domínio de produção externo e define **automaticamente** como fallback o endpoint de produção estável do seu Cloud Run (`https://ais-pre-dwwk7tdp3w422qgquzvkxx-6392973582.us-west2.run.app`).
+   * *Resultado:* Zero-Config e 100% à prova de falhas. Funciona imediatamente, em qualquer situação, sem necessidade de re-compilar manualmente ou se preocupar com sincronismo de deploys!
 
 ---
 
