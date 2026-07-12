@@ -211,6 +211,21 @@ Dando continuidade à busca constante por sofisticação e fidelidade de marca, 
 
 ---
 
+## 🚀 Hospedagem Híbrida: Cloudflare Pages + Cloud Run
+
+Caso você decida hospedar o **frontend (React)** de forma estática no **Cloudflare Pages** e o **backend (Express)** em um container no **Google Cloud Run** (ou outro servidor VPS/Docker):
+
+1. **Ative as Requisições Cross-Origin (CORS):**
+   * O backend Express já possui suporte nativo e seguro a CORS pré-configurado no arquivo `server.ts` para receber e responder às requisições originárias do seu domínio no Cloudflare Pages.
+
+2. **Configure a Variável de Ambiente no Cloudflare Pages:**
+   * No painel do Cloudflare Pages, acesse as configurações do seu projeto -> **Environment Variables** (Variáveis de Ambiente).
+   * Adicione uma nova variável chamada **`VITE_API_URL`** com o valor da URL de produção do seu backend (ex: `https://ais-pre-your-unique-id.run.app`).
+   * Salve e faça o re-deploy do site.
+   * *O que acontece por trás dos panos:* A aplicação React identificará essa variável e fará as requisições de formulário diretamente para o seu backend no Cloud Run, que processará os dados, validará e disparará o fluxo no n8n de forma 100% segura e transparente, sem acionar o redirecionamento de contingência do WhatsApp!
+
+---
+
 ## 💡 Guia de Referência de Boas Práticas (Para outros Desenvolvedores)
 
 Se você está usando este portfólio como referência para o seu próprio projeto, aqui estão alguns conceitos de excelência para observar no código:
