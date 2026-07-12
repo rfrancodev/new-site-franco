@@ -154,31 +154,36 @@ docker run -d -p 3000:3000 --env-file .env --name portfolio-app portfolio-rafael
 
 ## 🔗 Integração com o n8n e Fluxo de Automação
 
-O formulário de contato do site é integrado ao **n8n** através de uma ponte resiliente e segura configurada no backend Express (`server.ts`). Isso protege a URL do seu webhook e garante validações de segurança cruciais antes de despachar os leads.
+O formulário de contato do site é integrado ao **n8n** através de uma ponte resiliente, inteligente e segura configurada no backend Express (`server.ts`). Isso protege a URL do seu webhook e garante validações de segurança cruciais antes de despachar os leads.
 
 ### Formato de Envio dos Dados (JSON Payload)
 O backend Express recebe os dados do formulário de contato, valida os campos e envia a requisição HTTP POST para o seu webhook do n8n utilizando o seguinte formato JSON estruturado:
 
 ```json
 {
-  "timestamp": "2026-07-10T17:15:16.000Z",
+  "timestamp": "2026-07-11T20:21:07.655Z",
   "name": "Rafael Franco Teste Produção",
-  "whatsapp": "11999999999",
+  "whatsapp": "(35) 99999-9999",
   "email": "rfrancodev@gmail.com",
   "company": "Franco Digital",
   "service": "IA Generativa",
-  "budget": "R$ 5k - R$ 15k",
-  "message": "Mensagem de teste de envio de formulário para validação do webhook n8n de produção.",
-  "origin": "Formulário de Contato - Produção"
+  "budget": "R$ 5.000 a R$ 10.000",
+  "message": "Este é um teste real enviado automaticamente com o fluxo de produção ativo!",
+  "origin": "Formulário de Orçamento - site Franco Desenvolvedor"
 }
 ```
 
-### Tratamento Avançado de Erros e Resiliência
-Desenvolvemos uma camada de inteligência no backend dedicada a interceptar as respostas do n8n para melhorar a experiência do usuário e facilitar a manutenção do fluxo pelo desenvolvedor:
+### Inteligência de Roteamento e Normalização Dinâmica (Path Translation)
+Para garantir que a aplicação continue funcionando de forma transparente e imediata mesmo diante de alterações estruturais na automação do n8n, implementamos uma lógica de **normalização dinâmica de caminhos**:
+*   **O Problema:** Caso a planilha mude de nome (ex: `Leads-site` no Google Sheets) e o endpoint do webhook mude para `/leads-site`, mas as variáveis de ambiente (`.env` ou configs de Cloud Run) ainda estejam apontando para endpoints antigos (como `/formulario-contato` ou `/formulario-site`).
+*   **A Solução:** O backend Express (`server.ts`) analisa automaticamente as URLs configuradas nas variáveis de ambiente em tempo de execução. Qualquer menção a caminhos legados é traduzida instantaneamente para `/leads-site` antes do envio, evitando falhas de comunicação e retrabalho de re-implantação.
 
-1. **Correção de "Respond to Webhook" ausente (HTTP 500 do n8n):**
-   * *Cenário:* Se o seu fluxo do n8n for acionado com sucesso, mas o workflow no n8n não contiver um nó de resposta ou o webhook estiver configurado para responder somente quando o último nó for executado, o n8n retorna o erro `No Respond to Webhook node found in the workflow` (HTTP 500).
-   * *Solução:* O backend Express intercepta essa mensagem específica e **interpreta como Sucesso**, pois a automação de fato iniciou. Ele informa ao usuário final que o formulário foi enviado e adiciona um aviso técnico no console sobre como ajustar a resposta do webhook no n8n (alterando nas configurações do nó Webhook de "When last node finishes" para "Immediately", ou adicionando o nó de resposta).
+### Tratamento Avançado de Erros e Resiliência
+Desenvolvemos uma camada de inteligência no backend dedicada a interceptar as respostas do n8n para melhorar a experiência do usuário e garantir taxas máximas de conversão:
+
+1. **Tratamento de "Respond to Webhook" Ausente ou Não Utilizado (HTTP 500 do n8n):**
+   * *Cenário:* Se o seu fluxo do n8n for acionado com sucesso, mas o workflow retornar erros como `No Respond to Webhook node found in the workflow` ou `Unused Respond to Webhook node found in the workflow`, o n8n responde com status de erro HTTP 500.
+   * *Solução:* O backend Express intercepta essa mensagem específica e **interpreta como Sucesso**, pois a automação de fato iniciou. Ele informa ao usuário final que o formulário foi enviado e adiciona um aviso técnico informativo sobre como ajustar a resposta do webhook no painel do n8n (mudando a configuração "Respond" do nó Webhook de "When last node finishes" para "Immediately", ou conectando corretamente o nó de resposta).
 2. **Tratamento de Falhas Internas de Execução (HTTP 500 de Workflow):**
    * *Cenário:* Caso o n8n receba os dados do lead, mas algum nó interno do seu workflow falhe (ex: falha ao salvar na planilha, erro de API do CRM ou credenciais expiradas), ele retorna `There was a problem executing the workflow`.
    * *Solução:* O backend capta esse erro e exibe uma dica amigável e focada na depuração, recomendando que o administrador verifique a aba **"Executions" (Execuções)** ou logs de erro no painel do n8n para identificar qual nó específico falhou.
@@ -194,6 +199,15 @@ Desenvolvemos uma camada de inteligência no backend dedicada a interceptar as r
        * Para solucionar isso, o sistema tenta abrir em uma nova aba com `window.open()`. Se o bloqueador de pop-ups do navegador ou as restrições do iframe impedirem, o código detecta e executa um redirecionamento seguro da página de nível superior (`window.top.location.href`) por meio de tratamento de exceções cross-origin (`try-catch`).
        * Como uma última linha de defesa opcional contra bloqueadores de pop-ups rigorosos, quando o tempo esgota, um link direto amigável e focado em conversão é exibido no painel para que o lead possa clicar e iniciar a conversa com um único clique.
      * **Controle de Navegação:** O cliente sempre mantém o controle, com um botão nítido de **"Voltar e Tentar Novamente"** para poder corrigir informações ou re-submeter o formulário quando quiser.
+
+---
+
+## 🎨 Otimizações de Visual e Interface de Sucesso
+
+Dando continuidade à busca constante por sofisticação e fidelidade de marca, refinamos significativamente o design dos botões de ação na tela de envio bem-sucedido:
+*   **Centralização & Alinhamento Perfeito:** Os botões foram reconstruídos em um fluxo flexível responsivo (`flex-col sm:flex-row`), centralizados no eixo médio horizontal e dimensionados harmoniosamente (`w-full sm:w-auto px-8 py-3.5`).
+*   **Micro-interações de Hover:** Adição de efeitos suaves de deslocamento vertical (`transform hover:-translate-y-0.5`) e expansão de sombras coloridas (`shadow-lg shadow-emerald-500/10 hover:shadow-xl hover:shadow-emerald-500/20`) para dar uma resposta tátil de alta qualidade aos cliques e interações.
+*   **Prevenção de Quebras de Linha:** Uso da classe `whitespace-nowrap` para assegurar que a tipografia permaneça íntegra, elegante e de fácil leitura em qualquer largura de tela.
 
 ---
 
