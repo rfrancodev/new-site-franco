@@ -127,9 +127,9 @@ export function ContactSection() {
       const response = await fetch(`${apiBaseUrl}/api/contact`, {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "application/x-www-form-urlencoded",
         },
-        body: JSON.stringify({
+        body: new URLSearchParams({
           name: formData.name.trim(),
           whatsapp: formData.whatsapp.trim(),
           email: formData.email.trim().toLowerCase(),
@@ -138,15 +138,32 @@ export function ContactSection() {
           budget: formData.budget,
           message: formData.message.trim(),
           origin: "Formulário de Orçamento - site Franco Desenvolvedor",
-        }),
+        }).toString(),
       });
 
-      const result = await response.json();
+      let isSuccess = false;
+      let errorMsg = "";
 
-      if (response.ok && result.success) {
+      try {
+        const result = await response.json();
+        isSuccess = response.ok && result.success;
+        if (!isSuccess) {
+          errorMsg = result.error || content.contact.form.errorText;
+        }
+      } catch (jsonErr) {
+        // Se a requisição HTTP retornou status OK (2xx), consideramos sucesso
+        // mesmo se a decodificação do JSON falhar ou for bloqueada por CORS do navegador!
+        if (response.ok) {
+          isSuccess = true;
+        } else {
+          errorMsg = "Erro ao processar a resposta do servidor.";
+        }
+      }
+
+      if (isSuccess) {
         setSubmitStatus("success");
       } else {
-        setErrorMessage(result.error || content.contact.form.errorText);
+        setErrorMessage(errorMsg || content.contact.form.errorText);
         setSubmitStatus("error");
       }
     } catch (err) {
