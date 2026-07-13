@@ -117,16 +117,13 @@ export function ContactSection() {
       const isLocal = hostname === "localhost" || hostname === "127.0.0.1";
       const isStudioPreview = hostname.includes("us-west2.run.app");
       
-      if (!apiBaseUrl) {
-        if (isLocal || isStudioPreview) {
-          // No preview/dev local, precisamos apontar para a porta do backend ou servidor Cloud Run
-          if (isStudioPreview) {
-            apiBaseUrl = "https://ais-pre-dwwk7tdp3w422qgquzvkxx-6392973582.us-west2.run.app";
-          }
-        } else {
-          // Em produção no Cloudflare Pages, usamos chamadas relativas diretas por padrão
-          // para acionar as funções de API nativas do Cloudflare (como /api/leads com D1)
-          apiBaseUrl = "";
+      // Se estivermos no domínio de produção (ex: francorafael.com), FORÇAMOS rota relativa ("")
+      // para acionar as Cloudflare Pages Functions nativas com integração ao banco D1.
+      if (!isLocal && !isStudioPreview) {
+        apiBaseUrl = "";
+      } else if (!apiBaseUrl) {
+        if (isStudioPreview) {
+          apiBaseUrl = "https://ais-pre-dwwk7tdp3w422qgquzvkxx-6392973582.us-west2.run.app";
         }
       }
 

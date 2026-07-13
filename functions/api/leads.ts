@@ -27,7 +27,7 @@ const CORS_HEADERS = {
 };
 
 // URL atualizada:
-const N8N_WEBHOOK_URL = "https://n8n.francorafael.com/webhook-test/8f99c3f2-c8da-4d8d-8a37-168912b346e8";
+const N8N_WEBHOOK_URL = "https://n8n.francorafael.com/webhook/8f99c3f2-c8da-4d8d-8a37-168912b346e8";
 
 
 // Função auxiliar para garantir a criação automática da tabela no SQLite do D1
