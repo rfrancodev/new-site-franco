@@ -112,19 +112,25 @@ export function ContactSection() {
     try {
       let apiBaseUrl = import.meta.env.VITE_API_URL || "";
       
-      // Detecção inteligente de ambiente e fallback de produção automática
+      // Detecção inteligente de ambiente
+      const hostname = window.location.hostname;
+      const isLocal = hostname === "localhost" || hostname === "127.0.0.1";
+      const isStudioPreview = hostname.includes("us-west2.run.app");
+      
       if (!apiBaseUrl) {
-        const hostname = window.location.hostname;
-        const isLocal = hostname === "localhost" || hostname === "127.0.0.1";
-        const isStudioPreview = hostname.includes("us-west2.run.app") && (hostname.includes("ais-dev") || hostname.includes("ais-pre"));
-        
-        if (!isLocal && !isStudioPreview) {
-          // Fallback automático para o backend de produção do Google Cloud Run (AI Studio)
-          apiBaseUrl = "https://ais-pre-dwwk7tdp3w422qgquzvkxx-6392973582.us-west2.run.app";
+        if (isLocal || isStudioPreview) {
+          // No preview/dev local, precisamos apontar para a porta do backend ou servidor Cloud Run
+          if (isStudioPreview) {
+            apiBaseUrl = "https://ais-pre-dwwk7tdp3w422qgquzvkxx-6392973582.us-west2.run.app";
+          }
+        } else {
+          // Em produção no Cloudflare Pages, usamos chamadas relativas diretas por padrão
+          // para acionar as funções de API nativas do Cloudflare (como /api/leads com D1)
+          apiBaseUrl = "";
         }
       }
 
-      const response = await fetch(`${apiBaseUrl}/api/contact`, {
+      const response = await fetch(`${apiBaseUrl}/api/leads`, {
         method: "POST",
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",

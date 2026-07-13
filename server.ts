@@ -24,7 +24,7 @@ app.use((req, res, next) => {
 });
 
 // Contact form proxy API endpoint
-app.post("/api/contact", async (req, res) => {
+app.post(["/api/contact", "/api/leads"], async (req, res) => {
   try {
     const { name, whatsapp, email, company, service, budget, message, origin } = req.body;
 
