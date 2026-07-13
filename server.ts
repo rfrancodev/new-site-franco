@@ -2,8 +2,8 @@ import express from "express";
 import path from "path";
 import dotenv from "dotenv";
 
-// Load environment variables
-dotenv.config();
+// Load environment variables with override enabled to prioritize .env file
+dotenv.config({ override: true });
 
 const app = express();
 const PORT = 3000;

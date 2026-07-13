@@ -13,7 +13,6 @@ interface Env {
   N8N_WEBHOOK_URL?: string;
 }
 
-// Interface estendida com o método waitUntil obrigatório para o Cloudflare Workers
 interface RequestContext {
   request: Request;
   env: Env;
@@ -27,10 +26,27 @@ const CORS_HEADERS = {
   "Access-Control-Allow-Headers": "Content-Type",
 };
 
-// URL única do fluxo da Ana Flávia dentro do seu n8n
-const N8N_WEBHOOK_URL = "https://n8n.francorafael.com/webhook/69bf5cb1-ea37-4ee3-a313-f5cfe13a50a0";
+// URL atualizada:
+const N8N_WEBHOOK_URL = "https://n8n.francorafael.com/webhook-test/8f99c3f2-c8da-4d8d-8a37-168912b346e8";
 
-// OPTIONS handler for preflight requests
+
+// Função auxiliar para garantir a criação automática da tabela no SQLite do D1
+async function garantirTabela(DB: any) {
+  await DB.exec(`
+    CREATE TABLE IF NOT EXISTS leads (
+      id TEXT PRIMARY KEY,
+      name TEXT NOT NULL,
+      company TEXT,
+      phone TEXT,
+      segment TEXT,
+      email TEXT NOT NULL,
+      message TEXT,
+      date TEXT NOT NULL
+    );
+  `);
+}
+
+// OPTIONS handler para requisições de preflight (CORS)
 export async function onRequestOptions(): Promise<Response> {
   return new Response(null, {
     status: 204,
@@ -38,22 +54,20 @@ export async function onRequestOptions(): Promise<Response> {
   });
 }
 
-// GET /api/leads - Retrieve all leads sorted by date descending
+// GET /api/leads - Recupera os leads ordenados por data decrescente
 export async function onRequestGet(context: RequestContext): Promise<Response> {
   const { env } = context;
 
   if (!env.DB) {
     return new Response(
-      JSON.stringify({
-        success: false,
-        error: "D1 Database 'DB' binding is missing in Cloudflare Pages."
-      }),
+      JSON.stringify({ success: false, error: "D1 Database 'DB' binding is missing." }),
       { status: 500, headers: CORS_HEADERS }
     );
   }
 
   try {
-    const { results } = await env.DB.prepare("SELECT * FROM leads ORDER BY id DESC").all();
+    await garantirTabela(env.DB);
+    const { results } = await env.DB.prepare("SELECT * FROM leads ORDER BY date DESC").all();
     return new Response(
       JSON.stringify({ success: true, leads: results }),
       { status: 200, headers: CORS_HEADERS }
@@ -66,21 +80,20 @@ export async function onRequestGet(context: RequestContext): Promise<Response> {
   }
 }
 
-// POST /api/leads - Create a new lead and sync with n8n
+// POST /api/leads - Cria o lead e sincroniza com o n8n
 export async function onRequestPost(context: RequestContext): Promise<Response> {
   const { request, env, waitUntil } = context;
 
   if (!env.DB) {
     return new Response(
-      JSON.stringify({
-        success: false,
-        error: "D1 Database 'DB' binding is missing in Cloudflare Pages."
-      }),
+      JSON.stringify({ success: false, error: "D1 Database 'DB' binding is missing." }),
       { status: 500, headers: CORS_HEADERS }
     );
   }
 
   try {
+    await garantirTabela(env.DB);
+
     const contentType = request.headers.get("content-type") || "";
     let data: any = {};
 
@@ -93,7 +106,6 @@ export async function onRequestPost(context: RequestContext): Promise<Response> 
       data = await request.json();
     }
 
-    // Extract fields dynamically from either JSON or Form data
     const name = (data.name || "").trim();
     const email = (data.email || "").trim().toLowerCase();
     const phone = (data.whatsapp || data.phone || "").trim();
@@ -102,7 +114,6 @@ export async function onRequestPost(context: RequestContext): Promise<Response> 
     const budget = (data.budget || "").trim();
     const rawMessage = (data.message || "").trim();
 
-    // Validations (Company is optional in this project!)
     if (!name || !phone || !email || !rawMessage) {
       return new Response(
         JSON.stringify({ 
@@ -115,27 +126,14 @@ export async function onRequestPost(context: RequestContext): Promise<Response> 
 
     const leadId = data.id || Date.now().toString();
     const leadDate = data.date || new Date().toISOString();
-
-    // Concatena o orçamento à mensagem para salvar no D1 sem alterar a estrutura da tabela
     const leadMessage = budget ? `[Orçamento Estimado: ${budget}] ${rawMessage}` : rawMessage;
 
-    // 1. Salva no banco de dados D1 local da Cloudflare
     await env.DB.prepare(
       "INSERT OR REPLACE INTO leads (id, name, company, phone, segment, email, message, date) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
     )
-      .bind(
-        leadId,
-        name,
-        company,
-        phone,
-        segment,
-        email,
-        leadMessage,
-        leadDate
-      )
+      .bind(leadId, name, company, phone, segment, email, leadMessage, leadDate)
       .run();
 
-    // 2. Monta o objeto estruturado completo para enviar ao n8n
     const payloadParaN8n = {
       id: leadId,
       name,
@@ -152,7 +150,6 @@ export async function onRequestPost(context: RequestContext): Promise<Response> 
       source: "francorafael.com"
     };
 
-    // 3. Envia os dados de forma assíncrona para o n8n sem atrasar o carregamento da página do usuário
     waitUntil(
       fetch(env.N8N_WEBHOOK_URL || N8N_WEBHOOK_URL, {
         method: "POST",
@@ -176,21 +173,19 @@ export async function onRequestPost(context: RequestContext): Promise<Response> 
   }
 }
 
-// DELETE /api/leads - Clear all leads (Administrative)
+// DELETE /api/leads - Limpa o banco de dados (Administrativo)
 export async function onRequestDelete(context: RequestContext): Promise<Response> {
   const { env } = context;
 
   if (!env.DB) {
     return new Response(
-      JSON.stringify({
-        success: false,
-        error: "D1 Database 'DB' binding is missing in Cloudflare Pages."
-      }),
+      JSON.stringify({ success: false, error: "D1 Database 'DB' binding is missing." }),
       { status: 500, headers: CORS_HEADERS }
     );
   }
 
   try {
+    await garantirTabela(env.DB);
     await env.DB.prepare("DELETE FROM leads").run();
     return new Response(
       JSON.stringify({ success: true, message: "All leads cleared from D1 database." }),
