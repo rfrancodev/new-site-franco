@@ -8,7 +8,6 @@ interface Env {
       run: () => Promise<any>;
       all: () => Promise<{ results: any[] }>;
     };
-    exec: (query: string) => Promise<any>;
   };
   N8N_WEBHOOK_URL?: string;
 }
@@ -26,25 +25,8 @@ const CORS_HEADERS = {
   "Access-Control-Allow-Headers": "Content-Type",
 };
 
-// URL atualizada:
-const N8N_WEBHOOK_URL = "https://n8n.francorafael.com/webhook/8f99c3f2-c8da-4d8d-8a37-168912b346e8";
-
-
-// Função auxiliar para garantir a criação automática da tabela no SQLite do D1
-async function garantirTabela(DB: any) {
-  await DB.exec(`
-    CREATE TABLE IF NOT EXISTS leads (
-      id TEXT PRIMARY KEY,
-      name TEXT NOT NULL,
-      company TEXT,
-      phone TEXT,
-      segment TEXT,
-      email TEXT NOT NULL,
-      message TEXT,
-      date TEXT NOT NULL
-    );
-  `);
-}
+// URL de teste do seu n8n configurada
+const N8N_WEBHOOK_URL = "https://francorafael.com";
 
 // OPTIONS handler para requisições de preflight (CORS)
 export async function onRequestOptions(): Promise<Response> {
@@ -66,7 +48,6 @@ export async function onRequestGet(context: RequestContext): Promise<Response> {
   }
 
   try {
-    await garantirTabela(env.DB);
     const { results } = await env.DB.prepare("SELECT * FROM leads ORDER BY date DESC").all();
     return new Response(
       JSON.stringify({ success: true, leads: results }),
@@ -92,8 +73,6 @@ export async function onRequestPost(context: RequestContext): Promise<Response> 
   }
 
   try {
-    await garantirTabela(env.DB);
-
     const contentType = request.headers.get("content-type") || "";
     let data: any = {};
 
@@ -185,7 +164,6 @@ export async function onRequestDelete(context: RequestContext): Promise<Response
   }
 
   try {
-    await garantirTabela(env.DB);
     await env.DB.prepare("DELETE FROM leads").run();
     return new Response(
       JSON.stringify({ success: true, message: "All leads cleared from D1 database." }),
