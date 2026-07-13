@@ -25,8 +25,8 @@ const CORS_HEADERS = {
   "Access-Control-Allow-Headers": "Content-Type",
 };
 
-// URL de teste do seu n8n configurada
-const N8N_WEBHOOK_URL = "https://francorafael.com";
+// URL de produção ajustada para o seu domínio principal
+const N8N_WEBHOOK_URL = "https://n8n.francorafael.com/webhook/8f99c3f2-c8da-4d8d-8a37-168912b346e8";
 
 // OPTIONS handler para requisições de preflight (CORS)
 export async function onRequestOptions(): Promise<Response> {
@@ -36,7 +36,7 @@ export async function onRequestOptions(): Promise<Response> {
   });
 }
 
-// GET /api/leads - Recupera os leads ordenados por data decrescente
+// GET /api/leads - Recupera os dados da tabela leads_franco
 export async function onRequestGet(context: RequestContext): Promise<Response> {
   const { env } = context;
 
@@ -48,7 +48,7 @@ export async function onRequestGet(context: RequestContext): Promise<Response> {
   }
 
   try {
-    const { results } = await env.DB.prepare("SELECT * FROM leads ORDER BY date DESC").all();
+    const { results } = await env.DB.prepare("SELECT * FROM leads_franco ORDER BY date DESC").all();
     return new Response(
       JSON.stringify({ success: true, leads: results }),
       { status: 200, headers: CORS_HEADERS }
@@ -61,7 +61,7 @@ export async function onRequestGet(context: RequestContext): Promise<Response> {
   }
 }
 
-// POST /api/leads - Cria o lead e sincroniza com o n8n
+// POST /api/leads - Cria o lead na tabela leads_franco e sincroniza com o n8n
 export async function onRequestPost(context: RequestContext): Promise<Response> {
   const { request, env, waitUntil } = context;
 
@@ -87,13 +87,15 @@ export async function onRequestPost(context: RequestContext): Promise<Response> 
 
     const name = (data.name || "").trim();
     const email = (data.email || "").trim().toLowerCase();
-    const phone = (data.whatsapp || data.phone || "").trim();
+    const phone = (data.phone || "").trim();
+    const whatsapp = (data.whatsapp || data.phone || "").trim();
     const company = (data.company || "").trim();
-    const segment = (data.service || data.segment || "Não Especificado").trim();
+    const segment = (data.segment || "Não Especificado").trim();
+    const service = (data.service || data.segment || "Não Especificado").trim();
     const budget = (data.budget || "").trim();
     const rawMessage = (data.message || "").trim();
 
-    if (!name || !phone || !email || !rawMessage) {
+    if (!name || !whatsapp || !email || !rawMessage) {
       return new Response(
         JSON.stringify({ 
           success: false, 
@@ -106,11 +108,30 @@ export async function onRequestPost(context: RequestContext): Promise<Response> 
     const leadId = data.id || Date.now().toString();
     const leadDate = data.date || new Date().toISOString();
     const leadMessage = budget ? `[Orçamento Estimado: ${budget}] ${rawMessage}` : rawMessage;
+    const fullMessage = leadMessage; 
+    const source = data.source || "francorafael.com";
 
+    // Gravação exata na tabela leads_franco confirmada no seu painel D1
     await env.DB.prepare(
-      "INSERT OR REPLACE INTO leads (id, name, company, phone, segment, email, message, date) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
+      `INSERT OR REPLACE INTO leads_franco (
+        id, name, company, phone, whatsapp, segment, service, budget, email, message, fullmessage, date, source
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
     )
-      .bind(leadId, name, company, phone, segment, email, leadMessage, leadDate)
+      .bind(
+        leadId, 
+        name, 
+        company, 
+        phone, 
+        whatsapp, 
+        segment, 
+        service, 
+        budget, 
+        email, 
+        rawMessage, 
+        fullMessage, 
+        leadDate, 
+        source
+      )
       .run();
 
     const payloadParaN8n = {
@@ -118,17 +139,18 @@ export async function onRequestPost(context: RequestContext): Promise<Response> 
       name,
       company,
       phone,
-      whatsapp: phone,
+      whatsapp,
       segment,
-      service: segment,
+      service,
       budget,
       email,
       message: rawMessage,
-      fullMessage: leadMessage,
+      fullMessage,
       date: leadDate,
-      source: "francorafael.com"
+      source
     };
 
+    // O método env.N8N_WEBHOOK_URL terá prioridade se estiver configurado nas variáveis de ambiente do painel Cloudflare
     waitUntil(
       fetch(env.N8N_WEBHOOK_URL || N8N_WEBHOOK_URL, {
         method: "POST",
@@ -152,7 +174,7 @@ export async function onRequestPost(context: RequestContext): Promise<Response> 
   }
 }
 
-// DELETE /api/leads - Limpa o banco de dados (Administrativo)
+// DELETE /api/leads - Limpa a tabela leads_franco (Administrativo)
 export async function onRequestDelete(context: RequestContext): Promise<Response> {
   const { env } = context;
 
@@ -164,7 +186,7 @@ export async function onRequestDelete(context: RequestContext): Promise<Response
   }
 
   try {
-    await env.DB.prepare("DELETE FROM leads").run();
+    await env.DB.prepare("DELETE FROM leads_franco").run();
     return new Response(
       JSON.stringify({ success: true, message: "All leads cleared from D1 database." }),
       { status: 200, headers: CORS_HEADERS }
