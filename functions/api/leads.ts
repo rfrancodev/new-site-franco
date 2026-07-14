@@ -84,7 +84,6 @@ export async function onRequestPost(context: RequestContext): Promise<Response> 
 
     const name = (data.name || "").trim();
     const email = (data.email || "").trim().toLowerCase();
-    const phone = (data.phone || "").trim();
     const whatsapp = (data.whatsapp || data.phone || "").trim();
     const company = (data.company || "").trim();
     const segment = (data.segment || "Não Especificado").trim();
@@ -111,14 +110,13 @@ export async function onRequestPost(context: RequestContext): Promise<Response> 
     // Gravação exata na tabela leads_franco confirmada no seu painel D1
     await env.DB.prepare(
       `INSERT OR REPLACE INTO leads_franco (
-        id, name, company, phone, whatsapp, segment, service, budget, email, message, fullmessage, date, source
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+        id, name, company, whatsapp, segment, service, budget, email, message, fullmessage, date, source
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
     )
       .bind(
         leadId, 
         name, 
         company, 
-        phone, 
         whatsapp, 
         segment, 
         service, 
