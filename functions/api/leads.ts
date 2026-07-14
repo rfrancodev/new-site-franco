@@ -135,7 +135,6 @@ export async function onRequestPost(context: RequestContext): Promise<Response> 
       id: leadId,
       name,
       company,
-      phone,
       whatsapp,
       segment,
       service,
