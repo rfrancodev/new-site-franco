@@ -25,9 +25,6 @@ const CORS_HEADERS = {
   "Access-Control-Allow-Headers": "Content-Type",
 };
 
-// URL de produção ajustada para o seu domínio principal
-const N8N_WEBHOOK_URL = "https://n8n.francorafael.com/webhook/8f99c3f2-c8da-4d8d-8a37-168912b346e8";
-
 // OPTIONS handler para requisições de preflight (CORS)
 export async function onRequestOptions(): Promise<Response> {
   return new Response(null, {
@@ -150,17 +147,21 @@ export async function onRequestPost(context: RequestContext): Promise<Response> 
       source
     };
 
-    // O método env.N8N_WEBHOOK_URL terá prioridade se estiver configurado nas variáveis de ambiente do painel Cloudflare
-    waitUntil(
-      fetch(env.N8N_WEBHOOK_URL || N8N_WEBHOOK_URL, {
-        method: "POST",
-        headers: { 
-          "Content-Type": "application/json",
-          "X-Source-Application": "Cloudflare-Pages" 
-        },
-        body: JSON.stringify(payloadParaN8n)
-      }).catch(err => console.error("Falha ao enviar lead para o n8n:", err))
-    );
+    // Envia os dados de forma assíncrona para o n8n se a variável de ambiente estiver configurada no painel Cloudflare
+    if (env.N8N_WEBHOOK_URL) {
+      waitUntil(
+        fetch(env.N8N_WEBHOOK_URL, {
+          method: "POST",
+          headers: { 
+            "Content-Type": "application/json",
+            "X-Source-Application": "Cloudflare-Pages" 
+          },
+          body: JSON.stringify(payloadParaN8n)
+        }).catch(err => console.error("Falha ao enviar lead para o n8n:", err))
+      );
+    } else {
+      console.warn("Aviso: N8N_WEBHOOK_URL não configurada no painel da Cloudflare. O lead foi salvo no D1, mas não enviado ao n8n.");
+    }
 
     return new Response(
       JSON.stringify({ success: true, lead: payloadParaN8n }),
