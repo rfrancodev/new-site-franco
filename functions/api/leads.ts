@@ -86,7 +86,7 @@ export async function onRequestPost(context: RequestContext): Promise<Response> 
     const email = (data.email || "").trim().toLowerCase();
     const whatsapp = (data.whatsapp || data.phone || "").trim();
     const company = (data.company || "").trim();
-    const segment = (data.segment || "Não Especificado").trim();
+    const segment = (data.segment || data.service || "Não Especificado").trim();
     const service = (data.service || data.segment || "Não Especificado").trim();
     const budget = (data.budget || "").trim();
     const rawMessage = (data.message || "").trim();
